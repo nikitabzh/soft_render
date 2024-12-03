@@ -1,14 +1,16 @@
 package org.example.soft_render;
 
-import java.io.IOException;
-
 public class ModelManager {
 
-    public void loadModel(String filePath) throws IOException {
-        ObjReader.loadModel(filePath);
+    private Model model;
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
-    public void saveModel(String filePath) throws IOException {
-        ObjWriter.saveModel(filePath);
+    public Model getModel() {
+        return model;
     }
+
+    // добавьте методы для добавления, удаления и преобразования моделей
 }

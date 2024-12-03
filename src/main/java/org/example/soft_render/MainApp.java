@@ -76,7 +76,8 @@ public class MainApp extends Application {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             try {
-                modelManager.loadModel(selectedFile.getPath());
+                Model model = ObjReader.loadModel(selectedFile.getPath());
+                modelManager.setModel(model);
             } catch (IOException e) {
                 showErrorDialog("Error loading model", e.getMessage());
             }
@@ -92,7 +93,7 @@ public class MainApp extends Application {
         File selectedFile = fileChooser.showSaveDialog(null);
         if (selectedFile != null) {
             try {
-                modelManager.saveModel(selectedFile.getPath());
+                ObjWriter.saveModel(modelManager.getModel(), selectedFile.getPath());
             } catch (IOException e) {
                 showErrorDialog("Error saving model", e.getMessage());
             }
@@ -100,15 +101,15 @@ public class MainApp extends Application {
     }
 
     private void addModel() {
-        // Реализовать добавление модели к сцене
+        // реализовать добавление модели к сцене
     }
 
     private void removeModel() {
-        // Реализовать удаление модели со сцены
+        // реализовать удаление модели со сцены
     }
 
     private void transformModel() {
-        // Внедрить трансформирующую модель
+        // реализовать трансформирующую модель
     }
 
     private void showErrorDialog(String title, String message) {
