@@ -50,7 +50,7 @@ public class UIManager {
     }
 
     private void addModel() {
-        // реализовать добавление модели к сцене
+        // реализовать добавление модели к сцене/
     }
 
     private void removeModel() {
