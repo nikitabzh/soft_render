@@ -5,13 +5,16 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.Node;
 
 public class UIManager {
 
     private final FileManager fileManager;
+    private final ModelManager modelManager;
 
-    public UIManager(FileManager fileManager) {
+    public UIManager(FileManager fileManager, ModelManager modelManager) {
         this.fileManager = fileManager;
+        this.modelManager = modelManager;
     }
 
     public MenuBar createMenuBar() {
@@ -50,14 +53,22 @@ public class UIManager {
     }
 
     private void addModel() {
-        // реализовать добавление модели к сцене/
+        // Убрать добавление тестовой модели
     }
 
     private void removeModel() {
-        // реализовать удаление модели со сцены
+        // Пример удаления последней добавленной модели
+        if (!modelManager.getSceneManager().getSceneRoot().getChildren().isEmpty()) {
+            Node modelNode = modelManager.getSceneManager().getSceneRoot().getChildren().get(0);
+            modelManager.removeModelFromScene(modelNode);
+        }
     }
 
     private void transformModel() {
-        // реализовать трансформирующую модель
+        // Пример трансформации последней добавленной модели
+        if (!modelManager.getSceneManager().getSceneRoot().getChildren().isEmpty()) {
+            Node modelNode = modelManager.getSceneManager().getSceneRoot().getChildren().get(0);
+            modelManager.transformModel(modelNode, 50, 50, 50);
+        }
     }
 }

@@ -12,5 +12,11 @@ public class InterfaceManager {
         alert.showAndWait();
     }
 
-    // добавить методы для управления интерфейсом
+    public void showInfoDialog(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

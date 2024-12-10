@@ -1,5 +1,6 @@
 package org.example.soft_render;
 
+import javafx.scene.Node;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,9 @@ public class FileManager {
             try {
                 Model model = ObjReader.loadModel(selectedFile.getPath());
                 modelManager.setModel(model);
+                // Добавляем модель на сцену
+                Node modelNode = modelManager.getSceneManager().createModelNode(model);
+                modelManager.addModelToScene(modelNode);
             } catch (IOException e) {
                 showErrorDialog("Error loading model", e.getMessage());
             }

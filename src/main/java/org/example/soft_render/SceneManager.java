@@ -1,9 +1,11 @@
-package org.example.soft_rend;
+package org.example.soft_render;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 
 public class SceneManager {
 
@@ -25,10 +27,30 @@ public class SceneManager {
         return sceneRoot;
     }
 
-    // пример метода для создания простой модели
-    public Node createSampleModel() {
-        Box box = new Box(100, 100, 100);
-        box.setMaterial(new javafx.scene.paint.PhongMaterial(Color.BLUE));
-        return box;
+    // Метод для создания модели на основе данных из Model
+    public Node createModelNode(Model model) {
+        TriangleMesh mesh = new TriangleMesh();
+
+        for (Vertex vertex : model.vertices) {
+            mesh.getPoints().addAll(
+                    (float) vertex.x, (float) vertex.y, (float) vertex.z
+            );
+        }
+
+        for (Face face : model.faces) {
+            for (int i = 0; i < face.vertexIndices.size() - 2; i++) {
+                mesh.getFaces().addAll(
+                        face.vertexIndices.get(0), face.textureIndices.get(0),
+                        face.vertexIndices.get(i + 1), face.textureIndices.get(i + 1),
+                        face.vertexIndices.get(i + 2), face.textureIndices.get(i + 2)
+                );
+            }
+        }
+
+        MeshView meshView = new MeshView(mesh);
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.BLUE);
+        meshView.setMaterial(material);
+        return meshView;
     }
 }

@@ -13,18 +13,42 @@ public class ObjReader {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("v ")) {
-                    String[] parts = line.split(" ");
-                    double x = Double.parseDouble(parts[1]);
-                    double y = Double.parseDouble(parts[2]);
-                    double z = Double.parseDouble(parts[3]);
-                    model.addVertex(new Vertex(x, y, z));
-                } else if (line.startsWith("f ")) {
-                    String[] parts = line.split(" ");
-                    List<Integer> indices = new ArrayList<>();
-                    for (int i = 1; i < parts.length; i++) {
-                        indices.add(Integer.parseInt(parts[i].split("/")[0]) - 1);
+                    String[] parts = line.split("\\s+");
+                    if (parts.length >= 4) {
+                        try {
+                            double x = Double.parseDouble(parts[1]);
+                            double y = Double.parseDouble(parts[2]);
+                            double z = Double.parseDouble(parts[3]);
+                            model.addVertex(new Vertex(x, y, z));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Ошибка при чтении вершины: " + line);
+                        }
                     }
-                    model.addFace(new Face(indices));
+                } else if (line.startsWith("vt ")) {
+                    String[] parts = line.split("\\s+");
+                    if (parts.length >= 3) {
+                        try {
+                            double u = Double.parseDouble(parts[1]);
+                            double v = Double.parseDouble(parts[2]);
+                            model.addTextureCoordinate(new TextureCoordinate(u, v));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Ошибка при чтении текстурной координаты: " + line);
+                        }
+                    }
+                } else if (line.startsWith("f ")) {
+                    String[] parts = line.split("\\s+");
+                    List<Integer> vertexIndices = new ArrayList<>();
+                    List<Integer> textureIndices = new ArrayList<>();
+                    for (int i = 1; i < parts.length; i++) {
+                        String[] vertexParts = parts[i].split("/");
+                        if (vertexParts.length > 0 && !vertexParts[0].isEmpty()) {
+                            vertexIndices.add(Integer.parseInt(vertexParts[0]) - 1);
+                        }
+                        if (vertexParts.length > 1 && !vertexParts[1].isEmpty()) {
+                            textureIndices.add(Integer.parseInt(vertexParts[1]) - 1);
+                        }
+                    }
+                    model.addFace(new Face(vertexIndices, textureIndices));
                 }
             }
         }
