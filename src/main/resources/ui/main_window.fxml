@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -19,82 +20,86 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Файл">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Load Model" />
-              <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Save Model" />
+              <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель" />
+              <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель" />
               <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Remove Model" />
-              <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Load Texture" />
+              <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель" />
+              <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Правка">
           </Menu>
-          <Menu mnemonicParsing="false" text="View">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Theme">
-              </MenuItem>
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="Вид">
+           </Menu>
         </menus>
       </MenuBar>
    </top>
     <left>
        <VBox prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
            <HBox>
-               <CheckBox fx:id="transformCheckBox" mnemonicParsing="false" text="Transform" />
+               <CheckBox fx:id="transformCheckBox" mnemonicParsing="false" text="Трансформация" />
            </HBox>
            <HBox>
-               <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Lighting" />
+               <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Освещение" />
            </HBox>
-          <HBox>
-              <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Texture" />
-          </HBox>
+           <HBox>
+               <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Текстура" />
+           </HBox>
            <VBox fx:id="transformationPane" prefHeight="200.0" prefWidth="200.0">
                <children>
                    <HBox>
-                       <Label text="Translate X:"/>
+                       <Label text="Смещение X:"/>
                        <TextField fx:id="translateX" prefWidth="50"/>
                    </HBox>
                    <HBox>
-                       <Label text="Translate Y:"/>
+                       <Label text="Смещение Y:"/>
                        <TextField fx:id="translateY" prefWidth="50"/>
                    </HBox>
                    <HBox>
-                       <Label text="Translate Z:"/>
+                       <Label text="Смещение Z:"/>
                        <TextField fx:id="translateZ" prefWidth="50"/>
                    </HBox>
                    <HBox>
-                       <Label text="Rotate X:"/>
+                       <Label text="Поворот X:"/>
                        <TextField fx:id="rotateX" prefWidth="50"/>
                    </HBox>
                    <HBox>
-                       <Label text="Rotate Y:"/>
+                       <Label text="Поворот Y:"/>
                        <TextField fx:id="rotateY" prefWidth="50"/>
                    </HBox>
-                   <HBox>
-                       <Label text="Rotate Z:"/>
+                    <HBox>
+                       <Label text="Поворот Z:"/>
                        <TextField fx:id="rotateZ" prefWidth="50"/>
-                   </HBox>
+                    </HBox>
                    <HBox>
-                       <Label text="Scale X:"/>
+                       <Label text="Масштаб X:"/>
                        <TextField fx:id="scaleX" prefWidth="50"/>
                    </HBox>
-                   <HBox>
-                       <Label text="Scale Y:"/>
-                       <TextField fx:id="scaleY" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Scale Z:"/>
+                    <HBox>
+                        <Label text="Масштаб Y:"/>
+                      <TextField fx:id="scaleY" prefWidth="50"/>
+                    </HBox>
+                    <HBox>
+                       <Label text="Масштаб Z:"/>
                        <TextField fx:id="scaleZ" prefWidth="50"/>
                    </HBox>
                </children>
            </VBox>
-           <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Delete Vertex" />
-           <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Delete Polygon" />
+           <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину" />
+           <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон" />
+           <HBox>
+               <Label text="Скорость камеры:"/>
+               <Slider fx:id="cameraSpeedSlider" prefWidth="100" min="0" max="2"/>
+           </HBox>
+           <HBox>
+               <Label text="Скорость поворота:"/>
+               <Slider fx:id="rotateSpeedSlider" prefWidth="100" min="0" max="10"/>
+           </HBox>
            <ListView fx:id="modelListView" prefHeight="400.0" prefWidth="200.0" />
        </VBox>
-   </left>
+    </left>
   <center>
      <Canvas fx:id="canvas" height="800.0" width="1000.0" BorderPane.alignment="CENTER" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" onScroll="#handleMouseScroll">
         <BorderPane.margin>

@@ -1,4 +1,3 @@
-// ui/MainApp.java
 package ui;
 
 import javafx.application.Application;
@@ -20,6 +19,7 @@ public class MainApp extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

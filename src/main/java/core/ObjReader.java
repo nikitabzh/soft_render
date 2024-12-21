@@ -1,8 +1,8 @@
-// core/ObjReader.java
 package core;
 
 import math.Vector2;
 import math.Vector3;
+import ui.ErrorWindow;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -35,22 +35,24 @@ public class ObjReader {
     }
    private static void addTextureVertex(String line, Model model) {
         String[] parts = line.split("\\s+");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid texture vertex format in OBJ file");
+        if (parts.length < 3) {
+           ErrorWindow.showError("Invalid texture vertex format in OBJ file: " + line);
+            return;
         }
         try {
             double x = Double.parseDouble(parts[1]);
             double y = Double.parseDouble(parts[2]);
             model.addTextureVertex(new Vector2(x, y));
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Invalid texture vertex coordinate format in OBJ file");
+          ErrorWindow.showError("Invalid texture vertex coordinate format in OBJ file: " + line);
         }
     }
 
     private static void addVertex(String line, Model model) {
         String[] parts = line.split("\\s+");
-        if (parts.length != 4) {
-            throw new IllegalArgumentException("Invalid vertex format in OBJ file");
+        if (parts.length < 4) {
+           ErrorWindow.showError("Invalid vertex format in OBJ file: " + line);
+            return;
         }
         try {
             double x = Double.parseDouble(parts[1]);
@@ -58,28 +60,32 @@ public class ObjReader {
             double z = Double.parseDouble(parts[3]);
             model.addVertex(new Vector3(x, y, z));
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("Invalid vertex coordinate format in OBJ file");
+            ErrorWindow.showError("Invalid vertex coordinate format in OBJ file: " + line);
         }
     }
 
 
     private static void addPolygon(String line, Model model) {
-        String[] parts = line.split("\\s+");
+         String[] parts = line.split("\\s+");
          if (parts.length < 4) {
-                throw new IllegalArgumentException("Invalid polygon format in OBJ file");
+           ErrorWindow.showError("Invalid polygon format in OBJ file: " + line);
+           return;
          }
         List<Integer> polygon = new ArrayList<>();
         for (int i = 1; i < parts.length; i++) {
              String[] vertexPart = parts[i].split("/");
             try {
-                int vertexIndex = Integer.parseInt(vertexPart[0]) - 1;
-                polygon.add(vertexIndex);
-               if (vertexPart.length > 1){
-                    int textureVertexIndex = Integer.parseInt(vertexPart[1]) - 1;
-                    polygon.add(textureVertexIndex);
-               }
+               int vertexIndex = Integer.parseInt(vertexPart[0]) - 1;
+               polygon.add(vertexIndex);
+                if(vertexPart.length > 1){
+                   int textureVertexIndex = Integer.parseInt(vertexPart[1]) - 1;
+                    if(textureVertexIndex >= 0){
+                      polygon.add(textureVertexIndex);
+                    }
+                }
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("Invalid polygon vertex index in OBJ file");
+              ErrorWindow.showError("Invalid polygon vertex index in OBJ file: " + line);
+                return;
             }
         }
         model.addPolygon(polygon);

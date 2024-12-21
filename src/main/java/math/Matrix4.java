@@ -8,7 +8,6 @@ public class Matrix4 {
 
     public Matrix4() {
         matrix = new double[4][4];
-        // Инициализация единичной матрицей
         for (int i = 0; i < 4; i++) {
             matrix[i][i] = 1.0;
         }
