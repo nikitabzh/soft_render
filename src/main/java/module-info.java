@@ -1,8 +1,7 @@
-module org.example.soft_render {
+module main.soft_render {
     requires javafx.controls;
     requires javafx.fxml;
 
-
-    opens org.example.soft_render to javafx.fxml;
-    exports org.example.soft_render;
+    opens ui to javafx.fxml;
+    exports ui;
 }
