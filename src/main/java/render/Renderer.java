@@ -1,4 +1,3 @@
-// render/Renderer.java
 package render;
 
 import core.Camera;
@@ -16,11 +15,12 @@ import java.util.List;
 
 public class Renderer {
 
-    private Canvas canvas;
-    private GraphicsContext gc;
-    private double[][] zBuffer;
-    private int width, height;
-    private TriangleRasterizer triangleRasterizer;
+    private final Canvas canvas;
+    private final GraphicsContext gc;
+    private final double[][] zBuffer;
+    private final int width;
+    private final int height;
+    private final TriangleRasterizer triangleRasterizer;
     private boolean lightingEnabled;
     private boolean textureEnabled;
 

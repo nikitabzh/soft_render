@@ -1,4 +1,3 @@
-// core/Model.java
 package core;
 
 import math.Vector2;

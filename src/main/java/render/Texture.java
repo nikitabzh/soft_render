@@ -1,11 +1,10 @@
-// render/Texture.java
 package render;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Texture {
-    private Image image;
+    private final Image image;
 
     public Texture(Image image) {
         this.image = image;

@@ -1,4 +1,3 @@
-// core/ObjWriter.java
 package core;
 
 import math.Vector3;

@@ -1,4 +1,3 @@
-// render/TriangleRasterizer.java
 package render;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -7,9 +6,9 @@ import math.Vector2;
 import math.Vector3;
 
 public class TriangleRasterizer {
-    private GraphicsContext gc;
-    private int width;
-    private int height;
+    private final GraphicsContext gc;
+    private final int width;
+    private final int height;
 
     public TriangleRasterizer(GraphicsContext gc, int width, int height) {
         this.gc = gc;

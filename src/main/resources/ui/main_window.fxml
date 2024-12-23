@@ -18,23 +18,19 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController" onKeyPressed="#handleKeyPressed" onKeyReleased="#handleKeyReleased">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Файл">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель" />
-              <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель" />
-              <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель" />
-              <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Правка">
-          </Menu>
-          <Menu mnemonicParsing="false" text="Вид">
+       <MenuBar BorderPane.alignment="CENTER">
+           <Menu mnemonicParsing="false" text="Файл">
+               <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель"/>
+               <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель"/>
+               <SeparatorMenuItem mnemonicParsing="false"/>
+               <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель"/>
+               <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру"/>
            </Menu>
-        </menus>
-      </MenuBar>
+           <Menu mnemonicParsing="false" text="Правка">
+           </Menu>
+           <Menu mnemonicParsing="false" text="Вид">
+            </Menu>
+       </MenuBar>
    </top>
     <left>
        <VBox prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
@@ -48,54 +44,52 @@
                <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Текстура" />
            </HBox>
            <VBox fx:id="transformationPane" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                   <HBox>
-                       <Label text="Смещение X:"/>
-                       <TextField fx:id="translateX" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Смещение Y:"/>
-                       <TextField fx:id="translateY" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Смещение Z:"/>
-                       <TextField fx:id="translateZ" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Поворот X:"/>
-                       <TextField fx:id="rotateX" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Поворот Y:"/>
-                       <TextField fx:id="rotateY" prefWidth="50"/>
-                   </HBox>
-                    <HBox>
-                       <Label text="Поворот Z:"/>
-                       <TextField fx:id="rotateZ" prefWidth="50"/>
-                    </HBox>
-                   <HBox>
-                       <Label text="Масштаб X:"/>
-                       <TextField fx:id="scaleX" prefWidth="50"/>
-                   </HBox>
-                    <HBox>
-                        <Label text="Масштаб Y:"/>
-                      <TextField fx:id="scaleY" prefWidth="50"/>
-                    </HBox>
-                    <HBox>
-                       <Label text="Масштаб Z:"/>
-                       <TextField fx:id="scaleZ" prefWidth="50"/>
-                   </HBox>
-               </children>
+               <HBox>
+                   <Label text="Смещение X:"/>
+                   <TextField fx:id="translateX" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Смещение Y:"/>
+                   <TextField fx:id="translateY" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Смещение Z:"/>
+                   <TextField fx:id="translateZ" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Поворот X:"/>
+                   <TextField fx:id="rotateX" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Поворот Y:"/>
+                   <TextField fx:id="rotateY" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Поворот Z:"/>
+                   <TextField fx:id="rotateZ" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Масштаб X:"/>
+                   <TextField fx:id="scaleX" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Масштаб Y:"/>
+                   <TextField fx:id="scaleY" prefWidth="50"/>
+               </HBox>
+               <HBox>
+                   <Label text="Масштаб Z:"/>
+                   <TextField fx:id="scaleZ" prefWidth="50"/>
+               </HBox>
            </VBox>
            <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину" />
            <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон" />
            <HBox>
                <Label text="Скорость камеры:"/>
-               <Slider fx:id="cameraSpeedSlider" prefWidth="100" min="0" max="2"/>
+               <Slider fx:id="cameraSpeedSlider" prefWidth="100" max="2"/>
            </HBox>
            <HBox>
                <Label text="Скорость поворота:"/>
-               <Slider fx:id="rotateSpeedSlider" prefWidth="100" min="0" max="10"/>
+               <Slider fx:id="rotateSpeedSlider" prefWidth="100" max="10"/>
            </HBox>
            <ListView fx:id="modelListView" prefHeight="400.0" prefWidth="200.0" />
        </VBox>

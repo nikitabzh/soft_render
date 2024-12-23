@@ -1,4 +1,3 @@
-// core/Camera.java
 package core;
 
 import math.Matrix4;

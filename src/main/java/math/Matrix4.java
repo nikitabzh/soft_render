@@ -1,4 +1,3 @@
-// math/Matrix4.java
 package math;
 
 import java.util.Arrays;
