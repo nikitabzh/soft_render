@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import math.Matrix4;
-import math.Vector2;
 import math.Vector3;
 import render.Renderer;
 import render.Texture;
@@ -80,7 +79,6 @@ public class MainWindowController {
     private Vector3 cameraRotation = new Vector3(0, 0, 0);
     private Vector3 cameraOffset = new Vector3(0, 0, 0);
     private double cameraTranslateSpeed = 0.05;
-    private double cameraRotateSpeed = 0.002;
     private Vector3 orbitTarget = new Vector3(0, 0, 0);
     private boolean isOrbiting = false;
     private double cameraDistance = 5;
@@ -178,7 +176,7 @@ public class MainWindowController {
         }
         if(event.getCode() == KeyCode.O) {
             isOrbiting = !isOrbiting;
-            if(scene.getSelectedModels().size() > 0){
+            if(!scene.getSelectedModels().isEmpty()){
                 orbitTarget = calculateModelCenter(scene.getModels().get(scene.getSelectedModels().get(0)));
             }else{
                 orbitTarget = new Vector3(0, 0, 0);
@@ -187,17 +185,13 @@ public class MainWindowController {
         }
     }
     private void updateCameraPosition(){
-        if (scene.getSelectedModels().size() == 0) {
-            camera.setPosition(camera.getPosition().add(cameraOffset));
-            camera.setTarget(camera.getTarget().add(cameraOffset));
-            cameraOffset = new Vector3(0,0,0);
-        } else {
+        if (!scene.getSelectedModels().isEmpty()) {
             Model model = scene.getModels().get(scene.getSelectedModels().get(0));
             Vector3 center = calculateModelCenter(model);
-            camera.setPosition(camera.getPosition().add(cameraOffset));
-            camera.setTarget(camera.getTarget().add(cameraOffset));
-            cameraOffset = new Vector3(0,0,0);
         }
+        camera.setPosition(camera.getPosition().add(cameraOffset));
+        camera.setTarget(camera.getTarget().add(cameraOffset));
+        cameraOffset = new Vector3(0,0,0);
         render();
     }
     @FXML
@@ -230,7 +224,7 @@ public class MainWindowController {
             double dy = event.getY() - mouseY;
             double sensitivity = rotateSensitivity;
             if(!isOrbiting){
-                if (scene.getSelectedModels().size() == 0) {
+                if (scene.getSelectedModels().isEmpty()) {
                     rotateCamera(dx * sensitivity, dy * sensitivity, new Vector3(0, 0, 0));
                 } else {
                     Model model = scene.getModels().get(scene.getSelectedModels().get(0));
@@ -281,7 +275,7 @@ public class MainWindowController {
                 Image image = new Image(file.toURI().toString());
                 Texture texture = new Texture(image);
                 List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.size() == 0){
+                if (selectedModels.isEmpty()){
                     ErrorWindow.showError("No models selected");
                     return;
                 }
@@ -301,7 +295,7 @@ public class MainWindowController {
     }
     private void focusCameraOnModel(){
         List<Integer> selectedModels = scene.getSelectedModels();
-        if(selectedModels.size() == 0){
+        if(selectedModels.isEmpty()){
             camera.setPosition(new Vector3(0, 0, 5));
             camera.setTarget(new Vector3(0,0,0));
             render();
@@ -341,7 +335,7 @@ public class MainWindowController {
         double scrollDelta = event.getDeltaY();
         double sensitivity = 0.1;
         if(!isOrbiting){
-            if (scene.getSelectedModels().size() == 0) {
+            if (scene.getSelectedModels().isEmpty()) {
                 Vector3 viewDir = camera.getPosition().subtract(camera.getTarget()).normalize();
                 double distance = camera.getPosition().subtract(camera.getTarget()).magnitude();
                 double zoomSpeed = distance * sensitivity * 0.1;
@@ -390,7 +384,7 @@ public class MainWindowController {
         if (file != null) {
             try {
                 List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.size() == 0){
+                if (selectedModels.isEmpty()){
                     ErrorWindow.showError("No models selected");
                     return;
                 }
@@ -411,7 +405,7 @@ public class MainWindowController {
     @FXML
     private void removeModel() {
         List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.size() == 0) {
+        if (selectedModels.isEmpty()) {
             ErrorWindow.showError("No models selected");
             return;
         }
@@ -429,7 +423,7 @@ public class MainWindowController {
 
     private void updateSelection() {
         if(isShiftPressed){
-            if(modelListView.getSelectionModel().getSelectedIndices().size() > 0){
+            if(!modelListView.getSelectionModel().getSelectedIndices().isEmpty()){
                 int lastSelected = modelListView.getSelectionModel().getSelectedIndices().get(modelListView.getSelectionModel().getSelectedIndices().size() - 1);
                 if(!scene.isSelected(lastSelected)){
                     scene.selectModel(lastSelected);
@@ -450,7 +444,7 @@ public class MainWindowController {
 
     private void deleteSelectedVertices() {
         List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.size() == 0) {
+        if (selectedModels.isEmpty()) {
             ErrorWindow.showError("No models selected");
             return;
         }
@@ -485,7 +479,7 @@ public class MainWindowController {
 
     private void deleteSelectedPolygons() {
         List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.size() == 0) {
+        if (selectedModels.isEmpty()) {
             ErrorWindow.showError("Нет моделей выбрано");
             return;
         }
@@ -522,7 +516,7 @@ public class MainWindowController {
         if(!transformCheckBox.isSelected()) return;
 
         List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.size() == 0) {
+        if (selectedModels.isEmpty()) {
             return;
         }
 
@@ -572,7 +566,7 @@ public class MainWindowController {
 
     private void updateTransformFields() {
         List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.size() == 0) {
+        if (selectedModels.isEmpty()) {
             translateX.setText("0");
             translateY.setText("0");
             translateZ.setText("0");

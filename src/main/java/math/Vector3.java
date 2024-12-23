@@ -1,4 +1,3 @@
-// math/Vector3.java
 package math;
 
 import java.util.Objects;

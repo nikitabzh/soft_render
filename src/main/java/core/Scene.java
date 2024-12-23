@@ -1,12 +1,11 @@
-// core/Scene.java
 package core;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scene {
-    private List<Model> models = new ArrayList<>();
-    private List<Integer> selectedModels = new ArrayList<>();
+    private final List<Model> models = new ArrayList<>();
+    private final List<Integer> selectedModels = new ArrayList<>();
 
     public List<Model> getModels() {
         return models;
