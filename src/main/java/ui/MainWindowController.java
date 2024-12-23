@@ -331,8 +331,14 @@ public class MainWindowController {
     private void loadTexture() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Texture File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files", "*.jpg"));
         File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
         if (file != null) {
+          String fileName = file.getName().toLowerCase();
+            if (!fileName.endsWith(".jpg")) {
+                ErrorWindow.showError("Неверный формат файла. Поддерживаются только JPG файлы.");
+                 return;
+            }
             try {
                 Image image = new Image(file.toURI().toString());
                 Texture texture = new Texture(image);
@@ -423,8 +429,14 @@ public class MainWindowController {
     private void loadModel() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open OBJ File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("OBJ files", "*.obj"));
         File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
         if (file != null) {
+            String fileName = file.getName().toLowerCase();
+            if (!fileName.endsWith(".obj")) {
+                 ErrorWindow.showError("Неверный формат файла. Поддерживаются только OBJ файлы.");
+                 return;
+             }
             try {
                 Model model = ObjReader.read(file.getAbsolutePath());
                 scene.addModel(model);
