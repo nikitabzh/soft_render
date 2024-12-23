@@ -1,4 +1,3 @@
-// render/TriangleRasterizer.java
 package render;
 
 import javafx.scene.canvas.GraphicsContext;

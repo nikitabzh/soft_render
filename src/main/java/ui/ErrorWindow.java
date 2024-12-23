@@ -1,4 +1,3 @@
-// ui/ErrorWindow.java
 package ui;
 
 import javafx.scene.control.Alert;

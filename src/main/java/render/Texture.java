@@ -1,4 +1,3 @@
-// render/Texture.java
 package render;
 
 import javafx.scene.image.Image;

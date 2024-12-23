@@ -1,4 +1,3 @@
-// core/Scene.java
 package core;
 
 import java.util.ArrayList;

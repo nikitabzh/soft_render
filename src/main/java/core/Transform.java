@@ -1,4 +1,3 @@
-// core/Transform.java
 package core;
 
 
@@ -56,6 +55,7 @@ public class Transform {
         Matrix4 rotationYMatrix = Matrix4.rotationY(rotation.getY());
         Matrix4 rotationZMatrix = Matrix4.rotationZ(rotation.getZ());
 
-        modelMatrix = translationMatrix.multiply(rotationXMatrix).multiply(rotationYMatrix).multiply(rotationZMatrix).multiply(scaleMatrix);
+      modelMatrix = translationMatrix.multiply(rotationXMatrix).multiply(rotationYMatrix).multiply(rotationZMatrix).multiply(scaleMatrix);
+     // setModelMatrix(modelMatrix);
     }
 }

@@ -10,93 +10,193 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController" onKeyPressed="#handleKeyPressed" onKeyReleased="#handleKeyReleased">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" onKeyReleased="#handleKeyReleased" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Файл">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Load Model" />
-              <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Save Model" />
+              <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель" />
+              <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель" />
               <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Remove Model" />
-              <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Load Texture" />
+              <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель" />
+              <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Правка">
           </Menu>
-          <Menu mnemonicParsing="false" text="View">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Theme">
-              </MenuItem>
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="Вид">
+           </Menu>
         </menus>
       </MenuBar>
    </top>
     <left>
-       <VBox prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-           <HBox>
-               <CheckBox fx:id="transformCheckBox" mnemonicParsing="false" text="Transform" />
-           </HBox>
-           <HBox>
-               <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Lighting" />
-           </HBox>
-          <HBox>
-              <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Texture" />
-          </HBox>
-           <VBox fx:id="transformationPane" prefHeight="200.0" prefWidth="200.0">
+        <VBox prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <HBox />
+            <HBox>
+                <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Освещение">
+               <HBox.margin>
+                  <Insets bottom="3.0" top="3.0" />
+               </HBox.margin></CheckBox>
+            </HBox>
+            <HBox>
+                <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Текстура">
+               <HBox.margin>
+                  <Insets bottom="3.0" top="3.0" />
+               </HBox.margin></CheckBox>
+            </HBox>
+            <HBox>
+                <VBox>
+                    <Label text="Масштаб:" />
+               <HBox.margin>
+                  <Insets left="10.0" right="19.0" />
+               </HBox.margin>
+                </VBox>
+                <HBox>
+                    <VBox>
+                        <HBox>
+                            <Label text="X:" />
+                            <TextField fx:id="scaleX" prefWidth="50" />
+                        </HBox>
+                        <HBox>
+                            <Label text="Y:" />
+                            <TextField fx:id="scaleY" prefWidth="50" />
+                        </HBox>
+                        <HBox>
+                            <Label text="Z:" />
+                            <TextField fx:id="scaleZ" prefWidth="50" />
+                        </HBox>
+                    </VBox>
+                </HBox>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+            </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                   <VBox>
+                       <Label text="Смещение:" />
+                  <HBox.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </HBox.margin>
+                   </VBox>
+                   <HBox>
+                       <VBox>
+                           <HBox>
+                               <Label text="X:" />
+                               <TextField fx:id="translateX" prefWidth="50" />
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                           </HBox>
+                           <HBox>
+                               <Label text="Y:" />
+                               <TextField fx:id="translateY" prefWidth="50" />
+                           </HBox>
+                           <HBox>
+                               <Label text="Z:" />
+                               <TextField fx:id="translateZ" prefWidth="50" />
+                           </HBox>
+                       </VBox>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+                   </HBox>
+            </children>
+            <VBox.margin>
+               <Insets right="5.0" top="10.0" />
+            </VBox.margin>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                   <VBox>
+                       <Label text="Поворот:">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <HBox.margin>
+                     <Insets left="10.0" right="19.0" />
+                  </HBox.margin>
+                   </VBox>
+                   <HBox>
+                       <VBox>
+                           <HBox>
+                               <Label text="X:" />
+                               <TextField fx:id="rotateX" prefWidth="50" />
+                           </HBox>
+                           <HBox>
+                               <Label text="Y:" />
+                               <TextField fx:id="rotateY" prefWidth="50" />
+                           </HBox>
+                           <HBox>
+                               <Label text="Z:" />
+                               <TextField fx:id="rotateZ" prefWidth="50" />
+                           </HBox>
+                       </VBox>
+                   </HBox>
+            </children>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+            <children>
+      
+                  <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину">
+                  <HBox.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </HBox.margin>
+               </Button>
+                  <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin>
+               </Button>
+            </children>
+         </HBox>
+            <HBox>
+            <HBox>
                <children>
-                   <HBox>
-                       <Label text="Translate X:"/>
-                       <TextField fx:id="translateX" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Translate Y:"/>
-                       <TextField fx:id="translateY" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Translate Z:"/>
-                       <TextField fx:id="translateZ" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Rotate X:"/>
-                       <TextField fx:id="rotateX" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Rotate Y:"/>
-                       <TextField fx:id="rotateY" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Rotate Z:"/>
-                       <TextField fx:id="rotateZ" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Scale X:"/>
-                       <TextField fx:id="scaleX" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Scale Y:"/>
-                       <TextField fx:id="scaleY" prefWidth="50"/>
-                   </HBox>
-                   <HBox>
-                       <Label text="Scale Z:"/>
-                       <TextField fx:id="scaleZ" prefWidth="50"/>
-                   </HBox>
+                  <Label text="Скорость камеры:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner prefHeight="26.0" prefWidth="61.0" />
                </children>
-           </VBox>
-           <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Delete Vertex" />
-           <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Delete Polygon" />
-           <ListView fx:id="modelListView" prefHeight="400.0" prefWidth="200.0" />
-       </VBox>
-   </left>
-  <center>
-     <Canvas fx:id="canvas" height="800.0" width="1000.0" BorderPane.alignment="CENTER" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" onScroll="#handleMouseScroll">
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </HBox>
+            </HBox>
+            <HBox>
+            <HBox>
+               <children>
+                  <Label text="Скорость поворота:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner prefHeight="26.0" prefWidth="61.0" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </HBox>
+            </HBox>
+            <ListView fx:id="modelListView" prefHeight="200.0" prefWidth="400.0">
+            <VBox.margin>
+               <Insets left="10.0" />
+            </VBox.margin></ListView>
+        </VBox>
+    </left>
+
+    <center>
+     <Canvas fx:id="canvas" blendMode="DIFFERENCE" height="600.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" onScroll="#handleMouseScroll" width="800.0" BorderPane.alignment="TOP_CENTER">
         <BorderPane.margin>
            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
         </BorderPane.margin>
