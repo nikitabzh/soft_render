@@ -157,8 +157,6 @@ public class MainWindowController {
         renderer = new Renderer(canvas);
         render();
         setupTransformationButtons();
-
-        // Initialize fields with default values
         updateTransformFields();
     }
 
@@ -194,6 +192,95 @@ public class MainWindowController {
             ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
         }
         updateModelTransform();
+    }
+
+    private void updateModelTransform(){
+
+        List<Integer> selectedModels = scene.getSelectedModels();
+        if (selectedModels.isEmpty()) {
+            return;
+        }
+
+        for(Integer selectedModel : selectedModels){
+            Model model = scene.getModels().get(selectedModel);
+            try {
+                double x = Double.parseDouble(translateX.getText());
+                double y = Double.parseDouble(translateY.getText());
+                double z = Double.parseDouble(translateZ.getText());
+
+                double rx = Double.parseDouble(rotateX.getText());
+                double ry = Double.parseDouble(rotateY.getText());
+                double rz = Double.parseDouble(rotateZ.getText());
+
+                double sx = Double.parseDouble(scaleX.getText());
+                double sy = Double.parseDouble(scaleY.getText());
+                double sz = Double.parseDouble(scaleZ.getText());
+
+                model.getTransform().setPosition(new Vector3(x,y,z));
+                model.getTransform().setRotation(new Vector3(rx,ry,rz));
+                model.getTransform().setScale(new Vector3(sx,sy,sz));
+            } catch (NumberFormatException e){
+                // Set default values for model
+                model.getTransform().setPosition(new Vector3(0, 0, 0));
+                model.getTransform().setRotation(new Vector3(0, 0, 0));
+                model.getTransform().setScale(new Vector3(1, 1, 1));
+
+                // Set default values in TextField
+                 translateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                 translateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                 translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+
+                 rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                 rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                 rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+
+                 scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
+                 scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
+                 scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
+
+                ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
+            }
+        }
+        render();
+    }
+
+
+   private void updateTransformFields() {
+         List<Integer> selectedModels = scene.getSelectedModels();
+          if (selectedModels.isEmpty()) {
+            translateX.setText(String.format(Locale.US, "%.1f", 0.0));
+            translateY.setText(String.format(Locale.US, "%.1f", 0.0));
+            translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+
+            rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
+            rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
+            rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+
+            scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
+            scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
+            scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
+            return;
+        }
+
+        Model model = scene.getModels().get(selectedModels.get(0));
+
+        translateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getX()));
+        translateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getY()));
+        translateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getZ()));
+
+        rotateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getX()));
+        rotateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getY()));
+        rotateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getZ()));
+
+        scaleX.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getX()));
+        scaleY.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getY()));
+        scaleZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getZ()));
+    }
+
+    private void render() {
+        renderer.setLightingEnabled(lightingEnabled);
+        renderer.setTextureEnabled(textureEnabled);
+        renderer.render(scene, camera);
     }
 
     @FXML
@@ -327,41 +414,7 @@ public class MainWindowController {
         camera.setTarget(orbitTarget);
         camera.setUp(new Vector3(0, 1, 0));
     }
-    @FXML
-    private void loadTexture() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Texture File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files", "*.jpg"));
-        File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
-        if (file != null) {
-          String fileName = file.getName().toLowerCase();
-            if (!fileName.endsWith(".jpg")) {
-                ErrorWindow.showError("Неверный формат файла. Поддерживаются только JPG файлы.");
-                 return;
-            }
-            try {
-                Image image = new Image(file.toURI().toString());
-                Texture texture = new Texture(image);
-                List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.isEmpty()){
-                    ErrorWindow.showError("No models selected");
-                    return;
-                }
-                if (selectedModels.size() > 1){
-                    ErrorWindow.showError("Only one model can have texture");
-                    return;
-                }
-
-                Model model = scene.getModels().get(selectedModels.get(0));
-                model.setTexture(texture);
-
-                render();
-            } catch (Exception e) {
-                ErrorWindow.showError("Error loading texture: " + e.getMessage());
-            }
-        }
-    }
-    private void focusCameraOnModel(){
+        private void focusCameraOnModel(){
         List<Integer> selectedModels = scene.getSelectedModels();
         if(selectedModels.isEmpty()){
             camera.setPosition(new Vector3(0, 0, 5));
@@ -377,6 +430,7 @@ public class MainWindowController {
         cameraRotation = new Vector3(0, 0, 0);
         render();
     }
+
     private double calculateModelRadius(Model model) {
         double maxRadius = 0;
         Vector3 center = calculateModelCenter(model);
@@ -426,6 +480,41 @@ public class MainWindowController {
     }
 
     @FXML
+    private void loadTexture() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Texture File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files", "*.jpg"));
+        File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
+        if (file != null) {
+          String fileName = file.getName().toLowerCase();
+            if (!fileName.endsWith(".jpg")) {
+                ErrorWindow.showError("Неверный формат файла. Поддерживаются только JPG файлы.");
+                 return;
+            }
+            try {
+                Image image = new Image(file.toURI().toString());
+                Texture texture = new Texture(image);
+                List<Integer> selectedModels = scene.getSelectedModels();
+                if (selectedModels.isEmpty()){
+                    ErrorWindow.showError("No models selected");
+                    return;
+                }
+                if (selectedModels.size() > 1){
+                    ErrorWindow.showError("Only one model can have texture");
+                    return;
+                }
+
+                Model model = scene.getModels().get(selectedModels.get(0));
+                model.setTexture(texture);
+
+                render();
+            } catch (Exception e) {
+                ErrorWindow.showError("Error loading texture: " + e.getMessage());
+            }
+        }
+    }
+
+        @FXML
     private void loadModel() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open OBJ File");
@@ -447,6 +536,7 @@ public class MainWindowController {
             }
         }
     }
+
 
     @FXML
     private void saveModel() {
@@ -584,94 +674,5 @@ public class MainWindowController {
                 }
             });
         }
-    }
-
-    private void updateModelTransform(){
-
-        List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.isEmpty()) {
-            return;
-        }
-
-        for(Integer selectedModel : selectedModels){
-            Model model = scene.getModels().get(selectedModel);
-            try {
-                double x = Double.parseDouble(translateX.getText());
-                double y = Double.parseDouble(translateY.getText());
-                double z = Double.parseDouble(translateZ.getText());
-
-                double rx = Double.parseDouble(rotateX.getText());
-                double ry = Double.parseDouble(rotateY.getText());
-                double rz = Double.parseDouble(rotateZ.getText());
-
-                double sx = Double.parseDouble(scaleX.getText());
-                double sy = Double.parseDouble(scaleY.getText());
-                double sz = Double.parseDouble(scaleZ.getText());
-
-                model.getTransform().setPosition(new Vector3(x,y,z));
-                model.getTransform().setRotation(new Vector3(rx,ry,rz));
-                model.getTransform().setScale(new Vector3(sx,sy,sz));
-            } catch (NumberFormatException e){
-                // Set default values for model
-                model.getTransform().setPosition(new Vector3(0, 0, 0));
-                model.getTransform().setRotation(new Vector3(0, 0, 0));
-                model.getTransform().setScale(new Vector3(1, 1, 1));
-
-                // Set default values in TextField
-                 translateX.setText(String.format(Locale.US, "%.1f", 0.0));
-                 translateY.setText(String.format(Locale.US, "%.1f", 0.0));
-                 translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
-
-                 rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
-                 rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
-                 rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
-
-                 scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
-                 scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
-                 scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
-
-                ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
-            }
-        }
-        render();
-    }
-
-
-   private void updateTransformFields() {
-         List<Integer> selectedModels = scene.getSelectedModels();
-          if (selectedModels.isEmpty()) {
-            translateX.setText(String.format(Locale.US, "%.1f", 0.0));
-            translateY.setText(String.format(Locale.US, "%.1f", 0.0));
-            translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
-
-            rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
-            rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
-            rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
-
-            scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
-            scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
-            scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
-            return;
-        }
-
-        Model model = scene.getModels().get(selectedModels.get(0));
-
-        translateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getX()));
-        translateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getY()));
-        translateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getZ()));
-
-        rotateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getX()));
-        rotateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getY()));
-        rotateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getZ()));
-
-        scaleX.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getX()));
-        scaleY.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getY()));
-        scaleZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getZ()));
-    }
-
-    private void render() {
-        renderer.setLightingEnabled(lightingEnabled);
-        renderer.setTextureEnabled(textureEnabled);
-        renderer.render(scene, camera);
     }
 }
