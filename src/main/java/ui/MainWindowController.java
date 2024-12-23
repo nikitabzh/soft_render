@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import math.Matrix4;
@@ -21,6 +22,7 @@ import render.Texture;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class MainWindowController {
 
@@ -38,8 +40,6 @@ public class MainWindowController {
     @FXML
     private VBox transformationPane;
     @FXML
-    private CheckBox transformCheckBox;
-    @FXML
     private CheckBox lightingCheckBox;
     @FXML
     private CheckBox textureCheckBox;
@@ -50,6 +50,19 @@ public class MainWindowController {
     private TextField translateY;
     @FXML
     private TextField translateZ;
+    @FXML
+    private Button translateUpX;
+    @FXML
+    private Button translateDownX;
+    @FXML
+    private Button translateUpY;
+    @FXML
+    private Button translateDownY;
+    @FXML
+    private Button translateUpZ;
+    @FXML
+    private Button translateDownZ;
+
 
     @FXML
     private TextField rotateX;
@@ -57,6 +70,19 @@ public class MainWindowController {
     private TextField rotateY;
     @FXML
     private TextField rotateZ;
+    @FXML
+    private Button rotateUpX;
+    @FXML
+    private Button rotateDownX;
+    @FXML
+    private Button rotateUpY;
+    @FXML
+    private Button rotateDownY;
+    @FXML
+    private Button rotateUpZ;
+    @FXML
+    private Button rotateDownZ;
+
 
     @FXML
     private TextField scaleX;
@@ -64,11 +90,19 @@ public class MainWindowController {
     private TextField scaleY;
     @FXML
     private TextField scaleZ;
+     @FXML
+    private Button scaleUpX;
+    @FXML
+    private Button scaleDownX;
+    @FXML
+    private Button scaleUpY;
+    @FXML
+    private Button scaleDownY;
+    @FXML
+    private Button scaleUpZ;
+    @FXML
+    private Button scaleDownZ;
 
-    @FXML
-    private Slider cameraSpeedSlider;
-    @FXML
-    private Slider rotateSpeedSlider;
     private Scene scene;
     private Camera camera;
     private boolean isShiftPressed;
@@ -78,23 +112,16 @@ public class MainWindowController {
     private boolean textureEnabled = false;
     private Vector3 cameraRotation = new Vector3(0, 0, 0);
     private Vector3 cameraOffset = new Vector3(0, 0, 0);
-    private double cameraTranslateSpeed = 0.05;
+    private double cameraTranslateSpeed = 0.1;
     private Vector3 orbitTarget = new Vector3(0, 0, 0);
     private boolean isOrbiting = false;
     private double cameraDistance = 5;
-    private double rotateSensitivity = 0.002;
+    private double rotateSensitivity = 0.01;
     @FXML
     public void initialize() {
         scene = new Scene();
         camera = new Camera();
-        cameraSpeedSlider.setValue(1);
-        cameraSpeedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            cameraTranslateSpeed = newValue.doubleValue() * 0.05;
-        });
-        rotateSpeedSlider.setValue(1);
-        rotateSpeedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            rotateSensitivity = newValue.doubleValue() * 0.002;
-        });
+
         modelListView.setItems(FXCollections.observableList(scene.getModels()));
         modelListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -104,11 +131,8 @@ public class MainWindowController {
 
         deleteVertexButton.setOnAction(e -> deleteSelectedVertices());
         deletePolygonButton.setOnAction(e -> deleteSelectedPolygons());
-        transformationPane.setVisible(false);
-        transformCheckBox.setOnAction(e -> {
-            transformationPane.setVisible(transformCheckBox.isSelected());
-            updateModelTransform();
-        });
+        transformationPane.setVisible(true);
+
         translateX.textProperty().addListener((observable, oldValue, newValue) -> updateModelTransform());
         translateY.textProperty().addListener((observable, oldValue, newValue) -> updateModelTransform());
         translateZ.textProperty().addListener((observable, oldValue, newValue) -> updateModelTransform());
@@ -132,6 +156,44 @@ public class MainWindowController {
 
         renderer = new Renderer(canvas);
         render();
+        setupTransformationButtons();
+
+        // Initialize fields with default values
+        updateTransformFields();
+    }
+
+    private void setupTransformationButtons() {
+        translateUpX.setOnAction(e -> incrementCoordinate(translateX, 1));
+        translateDownX.setOnAction(e -> incrementCoordinate(translateX, -1));
+        translateUpY.setOnAction(e -> incrementCoordinate(translateY, 1));
+        translateDownY.setOnAction(e -> incrementCoordinate(translateY, -1));
+        translateUpZ.setOnAction(e -> incrementCoordinate(translateZ, 1));
+        translateDownZ.setOnAction(e -> incrementCoordinate(translateZ, -1));
+
+        rotateUpX.setOnAction(e -> incrementCoordinate(rotateX, 1));
+        rotateDownX.setOnAction(e -> incrementCoordinate(rotateX, -1));
+        rotateUpY.setOnAction(e -> incrementCoordinate(rotateY, 1));
+        rotateDownY.setOnAction(e -> incrementCoordinate(rotateY, -1));
+        rotateUpZ.setOnAction(e -> incrementCoordinate(rotateZ, 1));
+        rotateDownZ.setOnAction(e -> incrementCoordinate(rotateZ, -1));
+
+         scaleUpX.setOnAction(e -> incrementCoordinate(scaleX, 0.1));
+         scaleDownX.setOnAction(e -> incrementCoordinate(scaleX, -0.1));
+         scaleUpY.setOnAction(e -> incrementCoordinate(scaleY, 0.1));
+         scaleDownY.setOnAction(e -> incrementCoordinate(scaleY, -0.1));
+         scaleUpZ.setOnAction(e -> incrementCoordinate(scaleZ, 0.1));
+         scaleDownZ.setOnAction(e -> incrementCoordinate(scaleZ, -0.1));
+    }
+
+    private void incrementCoordinate(TextField textField, double increment) {
+       try {
+            double value = Double.parseDouble(textField.getText());
+           textField.setText(String.format(Locale.US, "%.1f", value + increment));
+        } catch (NumberFormatException e) {
+           textField.setText(String.format(Locale.US, "%.1f",increment));
+            ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
+        }
+        updateModelTransform();
     }
 
     @FXML
@@ -395,7 +457,7 @@ public class MainWindowController {
                 }
 
                 Model model = scene.getModels().get(selectedModels.get(0));
-                ObjWriter.write(file.getAbsolutePath(), model, transformCheckBox.isSelected());
+                ObjWriter.write(file.getAbsolutePath(), model, true);
 
             } catch (IOException e) {
                 ErrorWindow.showError("Error saving model: " + e.getMessage());
@@ -513,7 +575,6 @@ public class MainWindowController {
     }
 
     private void updateModelTransform(){
-        if(!transformCheckBox.isSelected()) return;
 
         List<Integer> selectedModels = scene.getSelectedModels();
         if (selectedModels.isEmpty()) {
@@ -545,17 +606,17 @@ public class MainWindowController {
                 model.getTransform().setScale(new Vector3(1, 1, 1));
 
                 // Set default values in TextField
-                translateX.setText("0");
-                translateY.setText("0");
-                translateZ.setText("0");
+                 translateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                 translateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                 translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-                rotateX.setText("0");
-                rotateY.setText("0");
-                rotateZ.setText("0");
+                 rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                 rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                 rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-                scaleX.setText("1");
-                scaleY.setText("1");
-                scaleZ.setText("1");
+                 scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
+                 scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
+                 scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
 
                 ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
             }
@@ -564,36 +625,36 @@ public class MainWindowController {
     }
 
 
-    private void updateTransformFields() {
-        List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.isEmpty()) {
-            translateX.setText("0");
-            translateY.setText("0");
-            translateZ.setText("0");
+   private void updateTransformFields() {
+         List<Integer> selectedModels = scene.getSelectedModels();
+          if (selectedModels.isEmpty()) {
+            translateX.setText(String.format(Locale.US, "%.1f", 0.0));
+            translateY.setText(String.format(Locale.US, "%.1f", 0.0));
+            translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-            rotateX.setText("0");
-            rotateY.setText("0");
-            rotateZ.setText("0");
+            rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
+            rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
+            rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-            scaleX.setText("1");
-            scaleY.setText("1");
-            scaleZ.setText("1");
+            scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
+            scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
+            scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
             return;
         }
 
         Model model = scene.getModels().get(selectedModels.get(0));
 
-        translateX.setText(String.valueOf(model.getTransform().getPosition().getX()));
-        translateY.setText(String.valueOf(model.getTransform().getPosition().getY()));
-        translateZ.setText(String.valueOf(model.getTransform().getPosition().getZ()));
+        translateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getX()));
+        translateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getY()));
+        translateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getPosition().getZ()));
 
-        rotateX.setText(String.valueOf(model.getTransform().getRotation().getX()));
-        rotateY.setText(String.valueOf(model.getTransform().getRotation().getY()));
-        rotateZ.setText(String.valueOf(model.getTransform().getRotation().getZ()));
+        rotateX.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getX()));
+        rotateY.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getY()));
+        rotateZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getRotation().getZ()));
 
-        scaleX.setText(String.valueOf(model.getTransform().getScale().getX()));
-        scaleY.setText(String.valueOf(model.getTransform().getScale().getY()));
-        scaleZ.setText(String.valueOf(model.getTransform().getScale().getZ()));
+        scaleX.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getX()));
+        scaleY.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getY()));
+        scaleZ.setText(String.format(Locale.US, "%.1f", model.getTransform().getScale().getZ()));
     }
 
     private void render() {

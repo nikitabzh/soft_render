@@ -10,7 +10,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -35,9 +34,6 @@
     <left>
        <VBox prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
            <HBox>
-               <CheckBox fx:id="transformCheckBox" mnemonicParsing="false" text="Трансформация" />
-           </HBox>
-           <HBox>
                <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Освещение" />
            </HBox>
            <HBox>
@@ -47,50 +43,60 @@
                <HBox>
                    <Label text="Смещение X:"/>
                    <TextField fx:id="translateX" prefWidth="50"/>
+                   <Button fx:id="translateUpX" text="^" />
+                   <Button fx:id="translateDownX" text="v" />
                </HBox>
                <HBox>
                    <Label text="Смещение Y:"/>
                    <TextField fx:id="translateY" prefWidth="50"/>
+                   <Button fx:id="translateUpY" text="^" />
+                   <Button fx:id="translateDownY" text="v" />
                </HBox>
                <HBox>
                    <Label text="Смещение Z:"/>
                    <TextField fx:id="translateZ" prefWidth="50"/>
+                   <Button fx:id="translateUpZ" text="^" />
+                   <Button fx:id="translateDownZ" text="v" />
                </HBox>
                <HBox>
                    <Label text="Поворот X:"/>
                    <TextField fx:id="rotateX" prefWidth="50"/>
+                   <Button fx:id="rotateUpX" text="^" />
+                   <Button fx:id="rotateDownX" text="v" />
                </HBox>
                <HBox>
                    <Label text="Поворот Y:"/>
                    <TextField fx:id="rotateY" prefWidth="50"/>
+                   <Button fx:id="rotateUpY" text="^" />
+                   <Button fx:id="rotateDownY" text="v" />
                </HBox>
                <HBox>
                    <Label text="Поворот Z:"/>
                    <TextField fx:id="rotateZ" prefWidth="50"/>
+                   <Button fx:id="rotateUpZ" text="^" />
+                   <Button fx:id="rotateDownZ" text="v" />
                </HBox>
-               <HBox>
+                 <HBox>
                    <Label text="Масштаб X:"/>
                    <TextField fx:id="scaleX" prefWidth="50"/>
+                     <Button fx:id="scaleUpX" text="^" />
+                     <Button fx:id="scaleDownX" text="v" />
                </HBox>
                <HBox>
                    <Label text="Масштаб Y:"/>
                    <TextField fx:id="scaleY" prefWidth="50"/>
+                    <Button fx:id="scaleUpY" text="^" />
+                    <Button fx:id="scaleDownY" text="v" />
                </HBox>
                <HBox>
                    <Label text="Масштаб Z:"/>
                    <TextField fx:id="scaleZ" prefWidth="50"/>
+                    <Button fx:id="scaleUpZ" text="^" />
+                     <Button fx:id="scaleDownZ" text="v" />
                </HBox>
            </VBox>
            <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину" />
            <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон" />
-           <HBox>
-               <Label text="Скорость камеры:"/>
-               <Slider fx:id="cameraSpeedSlider" prefWidth="100" max="2"/>
-           </HBox>
-           <HBox>
-               <Label text="Скорость поворота:"/>
-               <Slider fx:id="rotateSpeedSlider" prefWidth="100" max="10"/>
-           </HBox>
            <ListView fx:id="modelListView" prefHeight="400.0" prefWidth="200.0" />
        </VBox>
     </left>
