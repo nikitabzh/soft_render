@@ -42,7 +42,7 @@ public class Vector2 {
     }
 
     public double dotProduct(Vector2 other) {
-      return x * other.x + y * other.y;
+        return x * other.x + y * other.y;
     }
 
 
@@ -55,6 +55,7 @@ public class Vector2 {
         if (mag == 0) return new Vector2(0, 0);
         return new Vector2(x / mag, y / mag);
     }
+
     public Vector2 negate() {
         return new Vector2(-x, -y);
     }

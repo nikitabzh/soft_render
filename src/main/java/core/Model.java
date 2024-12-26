@@ -10,21 +10,21 @@ import java.util.List;
 public class Model {
     private List<Vector3> vertices = new ArrayList<>();
     private List<List<Integer>> polygons = new ArrayList<>();
-     private List<Vector2> textureVertices = new ArrayList<>();
+    private List<Vector2> textureVertices = new ArrayList<>();
     private String name;
     private Transform transform = new Transform();
-  private Texture texture;
+    private Texture texture;
 
 
-    public Model(String name){
+    public Model(String name) {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -54,25 +54,25 @@ public class Model {
 
 
     public void addVertex(Vector3 vertex) {
-      vertices.add(vertex);
+        vertices.add(vertex);
     }
 
     public void addPolygon(List<Integer> polygon) {
-      polygons.add(polygon);
+        polygons.add(polygon);
     }
-      public void addTextureVertex(Vector2 textureVertex) {
-          textureVertices.add(textureVertex);
-      }
+
+    public void addTextureVertex(Vector2 textureVertex) {
+        textureVertices.add(textureVertex);
+    }
 
     public int getVertexCount() {
         return vertices.size();
     }
 
     public int getPolygonCount() {
-      return polygons.size();
+        return polygons.size();
     }
 
-    //Методы для удаления вершин и полигонов
     public void removeVertex(int index) {
         if (index >= 0 && index < vertices.size()) {
             vertices.remove(index);
@@ -84,13 +84,15 @@ public class Model {
             polygons.remove(index);
         }
     }
+
     public Transform getTransform() {
-      return transform;
+        return transform;
     }
 
     public void setTransform(Transform transform) {
-      this.transform = transform;
+        this.transform = transform;
     }
+
     public Texture getTexture() {
         return texture;
     }
@@ -98,6 +100,7 @@ public class Model {
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
+
     @Override
     public String toString() {
         return name;

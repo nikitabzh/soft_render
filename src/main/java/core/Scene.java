@@ -16,13 +16,13 @@ public class Scene {
     }
 
     public void removeModel(Model model) {
-      models.remove(model);
-      selectedModels.remove(Integer.valueOf(models.indexOf(model)));
+        models.remove(model);
+        selectedModels.remove(Integer.valueOf(models.indexOf(model)));
     }
 
 
     public void clearSelection() {
-      selectedModels.clear();
+        selectedModels.clear();
     }
 
     public List<Integer> getSelectedModels() {
@@ -36,14 +36,14 @@ public class Scene {
     }
 
     public void deselectModel(int index) {
-      selectedModels.remove(Integer.valueOf(index));
+        selectedModels.remove(Integer.valueOf(index));
     }
 
-    public void selectAll(){
-      selectedModels.clear();
-      for (int i = 0; i < models.size(); i++) {
-        selectedModels.add(i);
-      }
+    public void selectAll() {
+        selectedModels.clear();
+        for (int i = 0; i < models.size(); i++) {
+            selectedModels.add(i);
+        }
     }
 
     public boolean isSelected(int index) {

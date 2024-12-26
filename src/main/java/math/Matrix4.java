@@ -22,26 +22,29 @@ public class Matrix4 {
     public double[][] getMatrix() {
         return matrix;
     }
+
     public double get(int row, int col) {
-      return matrix[row][col];
+        return matrix[row][col];
     }
 
     public void set(int row, int col, double value) {
-      matrix[row][col] = value;
+        matrix[row][col] = value;
     }
+
     public void setMatrix(double[][] matrix) {
-      this.matrix = matrix;
+        this.matrix = matrix;
     }
+
     public static Matrix4 identity() {
         return new Matrix4();
     }
 
     public static Matrix4 translation(double x, double y, double z) {
-      Matrix4 m = new Matrix4();
-      m.set(0, 3, x);
-      m.set(1, 3, y);
-      m.set(2, 3, z);
-      return m;
+        Matrix4 m = new Matrix4();
+        m.set(0, 3, x);
+        m.set(1, 3, y);
+        m.set(2, 3, z);
+        return m;
     }
 
     public static Matrix4 scaling(double x, double y, double z) {
@@ -76,14 +79,14 @@ public class Matrix4 {
 
 
     public static Matrix4 rotationZ(double angle) {
-      double cos = Math.cos(Math.toRadians(angle));
-      double sin = Math.sin(Math.toRadians(angle));
+        double cos = Math.cos(Math.toRadians(angle));
+        double sin = Math.sin(Math.toRadians(angle));
         Matrix4 m = new Matrix4();
-      m.set(0, 0, cos);
-      m.set(0, 1, -sin);
-      m.set(1, 0, sin);
-      m.set(1, 1, cos);
-      return m;
+        m.set(0, 0, cos);
+        m.set(0, 1, -sin);
+        m.set(1, 0, sin);
+        m.set(1, 1, cos);
+        return m;
     }
 
 
@@ -100,29 +103,29 @@ public class Matrix4 {
     }
 
     public Vector3 transform(Vector3 vector) {
-      double x = vector.getX() * matrix[0][0] + vector.getY() * matrix[0][1] + vector.getZ() * matrix[0][2] + 1 * matrix[0][3];
-      double y = vector.getX() * matrix[1][0] + vector.getY() * matrix[1][1] + vector.getZ() * matrix[1][2] + 1 * matrix[1][3];
-      double z = vector.getX() * matrix[2][0] + vector.getY() * matrix[2][1] + vector.getZ() * matrix[2][2] + 1 * matrix[2][3];
+        double x = vector.getX() * matrix[0][0] + vector.getY() * matrix[0][1] + vector.getZ() * matrix[0][2] + 1 * matrix[0][3];
+        double y = vector.getX() * matrix[1][0] + vector.getY() * matrix[1][1] + vector.getZ() * matrix[1][2] + 1 * matrix[1][3];
+        double z = vector.getX() * matrix[2][0] + vector.getY() * matrix[2][1] + vector.getZ() * matrix[2][2] + 1 * matrix[2][3];
         return new Vector3(x, y, z);
     }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Matrix4 matrix4 = (Matrix4) o;
-    return Arrays.deepEquals(matrix, matrix4.matrix);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Matrix4 matrix4 = (Matrix4) o;
+        return Arrays.deepEquals(matrix, matrix4.matrix);
+    }
 
-  @Override
-  public int hashCode() {
-    return Arrays.deepHashCode(matrix);
-  }
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(matrix);
+    }
 
-  @Override
-  public String toString() {
-    return "Matrix4{" +
-            "matrix=" + Arrays.deepToString(matrix) +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "Matrix4{" +
+                "matrix=" + Arrays.deepToString(matrix) +
+                '}';
+    }
 }
