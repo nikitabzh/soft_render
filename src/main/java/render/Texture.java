@@ -12,7 +12,7 @@ public class Texture {
 
     public Color getPixelColor(double u, double v) {
         if (image == null) return Color.WHITE;
-      
+
         int x = (int) (u * image.getWidth());
         int y = (int) (v * image.getHeight());
 

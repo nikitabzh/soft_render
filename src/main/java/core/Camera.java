@@ -16,10 +16,10 @@ public class Camera {
         updateViewMatrix();
     }
 
-    public Camera(){
+    public Camera() {
         this.position = new Vector3(0, 0, 5);
-        this.target = new Vector3(0,0,0);
-        this.up = new Vector3(0,1,0);
+        this.target = new Vector3(0, 0, 0);
+        this.up = new Vector3(0, 1, 0);
         updateViewMatrix();
     }
 

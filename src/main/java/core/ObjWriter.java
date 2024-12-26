@@ -14,8 +14,7 @@ public class ObjWriter {
             writeVertices(writer, model.getVertices());
             writePolygons(writer, model.getPolygons());
             System.out.println("Model saved successfully to " + filePath);
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new IOException("Error writing to file " + filePath, e);
         }
     }

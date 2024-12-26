@@ -1,6 +1,5 @@
 package core;
 
-
 import math.Matrix4;
 import math.Vector3;
 
@@ -13,6 +12,7 @@ public class Transform {
     public Transform() {
         updateModelMatrix();
     }
+
     public Vector3 getPosition() {
         return position;
     }
@@ -55,6 +55,6 @@ public class Transform {
         Matrix4 rotationYMatrix = Matrix4.rotationY(rotation.getY());
         Matrix4 rotationZMatrix = Matrix4.rotationZ(rotation.getZ());
 
-      modelMatrix = translationMatrix.multiply(rotationXMatrix).multiply(rotationYMatrix).multiply(rotationZMatrix).multiply(scaleMatrix);
+        modelMatrix = translationMatrix.multiply(rotationXMatrix).multiply(rotationYMatrix).multiply(rotationZMatrix).multiply(scaleMatrix);
     }
 }

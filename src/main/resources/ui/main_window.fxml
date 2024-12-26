@@ -15,15 +15,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" onKeyReleased="#handleKeyReleased" prefHeight="1024.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            onKeyPressed="#handleKeyPressed" onKeyReleased="#handleKeyReleased" prefHeight="1024.0" prefWidth="1440.0"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ui.MainWindowController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="Файл">
-                <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель" />
-                <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель" />
-                <SeparatorMenuItem mnemonicParsing="false" />
-                <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель" />
-                <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру" />
+                <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Загрузить модель"/>
+                <MenuItem mnemonicParsing="false" onAction="#saveModel" text="Сохранить модель"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem mnemonicParsing="false" onAction="#removeModel" text="Удалить модель"/>
+                <MenuItem mnemonicParsing="false" onAction="#loadTexture" text="Загрузить текстуру"/>
             </Menu>
         </MenuBar>
     </top>
@@ -32,203 +35,231 @@
             <HBox>
                 <CheckBox fx:id="lightingCheckBox" mnemonicParsing="false" text="Освещение">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </HBox.margin></CheckBox>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </CheckBox>
             </HBox>
             <HBox>
                 <CheckBox fx:id="textureCheckBox" mnemonicParsing="false" text="Текстура">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </HBox.margin></CheckBox>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </CheckBox>
             </HBox>
             <VBox fx:id="transformationPane" prefHeight="200.0" prefWidth="200.0">
                 <HBox>
-                    <Label text="Смещение X:" />
+                    <Label text="Смещение X:"/>
                     <TextField fx:id="translateX" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="translateUpX" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="translateDownX" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Смещение Y:" />
+                    <Label text="Смещение Y:"/>
                     <TextField fx:id="translateY" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="translateUpY" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="translateDownY" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Смещение Z:" />
+                    <Label text="Смещение Z:"/>
                     <TextField fx:id="translateZ" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="translateUpZ" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="translateDownZ" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Поворот X:" />
+                    <Label text="Поворот X:"/>
                     <TextField fx:id="rotateX" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="rotateUpX" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="rotateDownX" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Поворот Y:" />
+                    <Label text="Поворот Y:"/>
                     <TextField fx:id="rotateY" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="rotateUpY" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="rotateDownY" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Поворот Z:" />
+                    <Label text="Поворот Z:"/>
                     <TextField fx:id="rotateZ" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="12.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="rotateUpZ" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="rotateDownZ" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Масштаб X:" />
+                    <Label text="Масштаб X:"/>
                     <TextField fx:id="scaleX" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="scaleUpX" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="scaleDownX" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Масштаб Y:" />
+                    <Label text="Масштаб Y:"/>
                     <TextField fx:id="scaleY" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="scaleUpY" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="scaleDownY" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
                 <HBox>
-                    <Label text="Масштаб Z:" />
+                    <Label text="Масштаб Z:"/>
                     <TextField fx:id="scaleZ" prefWidth="50">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0" />
-                        </HBox.margin></TextField>
+                            <Insets bottom="2.0" left="10.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </TextField>
                     <Button fx:id="scaleUpZ" text="^">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <Button fx:id="scaleDownZ" text="v">
                         <HBox.margin>
-                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                        </HBox.margin></Button>
+                            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                        </HBox.margin>
+                    </Button>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </VBox.margin>
                 </HBox>
             </VBox>
             <HBox alignment="BOTTOM_CENTER" prefHeight="38.0" prefWidth="300.0">
-                <children>
-                    <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину">
-                        <HBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон">
-                        <HBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                        </HBox.margin>
-                    </Button>
-                </children>
+                <Button fx:id="deleteVertexButton" mnemonicParsing="false" text="Удалить вершину">
+                    <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="deletePolygonButton" mnemonicParsing="false" text="Удалить полигон">
+                    <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </HBox.margin>
+                </Button>
             </HBox>
-            <ListView fx:id="modelListView" prefHeight="245.0" prefWidth="300.0" />
+            <ListView fx:id="modelListView" prefHeight="245.0" prefWidth="300.0"/>
             <BorderPane.margin>
-                <Insets />
+                <Insets/>
             </BorderPane.margin>
         </VBox>
     </left>
     <center>
-        <Canvas fx:id="canvas" height="725.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed" onScroll="#handleMouseScroll" width="1000.0" BorderPane.alignment="TOP_CENTER">
+        <Canvas fx:id="canvas" height="725.0" onMouseDragged="#handleMouseDragged" onMousePressed="#handleMousePressed"
+                onScroll="#handleMouseScroll" width="1000.0" BorderPane.alignment="TOP_CENTER">
             <BorderPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0"/>
             </BorderPane.margin>
         </Canvas>
     </center>

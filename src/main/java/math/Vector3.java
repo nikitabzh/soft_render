@@ -47,18 +47,18 @@ public class Vector3 {
 
 
     public Vector3 multiply(double scalar) {
-      return new Vector3(x * scalar, y * scalar, z * scalar);
+        return new Vector3(x * scalar, y * scalar, z * scalar);
     }
 
     public double dotProduct(Vector3 other) {
-      return x * other.x + y * other.y + z * other.z;
+        return x * other.x + y * other.y + z * other.z;
     }
 
     public Vector3 crossProduct(Vector3 other) {
-      double newX = y * other.z - z * other.y;
-      double newY = z * other.x - x * other.z;
-      double newZ = x * other.y - y * other.x;
-      return new Vector3(newX, newY, newZ);
+        double newX = y * other.z - z * other.y;
+        double newY = z * other.x - x * other.z;
+        double newZ = x * other.y - y * other.x;
+        return new Vector3(newX, newY, newZ);
     }
 
     public double magnitude() {
@@ -70,6 +70,7 @@ public class Vector3 {
         if (mag == 0) return new Vector3(0, 0, 0);
         return new Vector3(x / mag, y / mag, z / mag);
     }
+
     public Vector3 negate() {
         return new Vector3(-x, -y, -z);
     }

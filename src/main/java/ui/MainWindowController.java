@@ -90,7 +90,7 @@ public class MainWindowController {
     private TextField scaleY;
     @FXML
     private TextField scaleZ;
-     @FXML
+    @FXML
     private Button scaleUpX;
     @FXML
     private Button scaleDownX;
@@ -117,6 +117,7 @@ public class MainWindowController {
     private boolean isOrbiting = false;
     private double cameraDistance = 5;
     private double rotateSensitivity = 0.01;
+
     @FXML
     public void initialize() {
         scene = new Scene();
@@ -175,33 +176,33 @@ public class MainWindowController {
         rotateUpZ.setOnAction(e -> incrementCoordinate(rotateZ, 1));
         rotateDownZ.setOnAction(e -> incrementCoordinate(rotateZ, -1));
 
-         scaleUpX.setOnAction(e -> incrementCoordinate(scaleX, 0.1));
-         scaleDownX.setOnAction(e -> incrementCoordinate(scaleX, -0.1));
-         scaleUpY.setOnAction(e -> incrementCoordinate(scaleY, 0.1));
-         scaleDownY.setOnAction(e -> incrementCoordinate(scaleY, -0.1));
-         scaleUpZ.setOnAction(e -> incrementCoordinate(scaleZ, 0.1));
-         scaleDownZ.setOnAction(e -> incrementCoordinate(scaleZ, -0.1));
+        scaleUpX.setOnAction(e -> incrementCoordinate(scaleX, 0.1));
+        scaleDownX.setOnAction(e -> incrementCoordinate(scaleX, -0.1));
+        scaleUpY.setOnAction(e -> incrementCoordinate(scaleY, 0.1));
+        scaleDownY.setOnAction(e -> incrementCoordinate(scaleY, -0.1));
+        scaleUpZ.setOnAction(e -> incrementCoordinate(scaleZ, 0.1));
+        scaleDownZ.setOnAction(e -> incrementCoordinate(scaleZ, -0.1));
     }
 
     private void incrementCoordinate(TextField textField, double increment) {
-       try {
+        try {
             double value = Double.parseDouble(textField.getText());
-           textField.setText(String.format(Locale.US, "%.1f", value + increment));
+            textField.setText(String.format(Locale.US, "%.1f", value + increment));
         } catch (NumberFormatException e) {
-           textField.setText(String.format(Locale.US, "%.1f",increment));
+            textField.setText(String.format(Locale.US, "%.1f", increment));
             ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
         }
         updateModelTransform();
     }
 
-    private void updateModelTransform(){
+    private void updateModelTransform() {
 
         List<Integer> selectedModels = scene.getSelectedModels();
         if (selectedModels.isEmpty()) {
             return;
         }
 
-        for(Integer selectedModel : selectedModels){
+        for (Integer selectedModel : selectedModels) {
             Model model = scene.getModels().get(selectedModel);
             try {
                 double x = Double.parseDouble(translateX.getText());
@@ -216,27 +217,27 @@ public class MainWindowController {
                 double sy = Double.parseDouble(scaleY.getText());
                 double sz = Double.parseDouble(scaleZ.getText());
 
-                model.getTransform().setPosition(new Vector3(x,y,z));
-                model.getTransform().setRotation(new Vector3(rx,ry,rz));
-                model.getTransform().setScale(new Vector3(sx,sy,sz));
-            } catch (NumberFormatException e){
-                // Set default values for model
+                model.getTransform().setPosition(new Vector3(x, y, z));
+                model.getTransform().setRotation(new Vector3(rx, ry, rz));
+                model.getTransform().setScale(new Vector3(sx, sy, sz));
+            } catch (NumberFormatException e) {
+                // значения по умолчанию для модели
                 model.getTransform().setPosition(new Vector3(0, 0, 0));
                 model.getTransform().setRotation(new Vector3(0, 0, 0));
                 model.getTransform().setScale(new Vector3(1, 1, 1));
 
-                // Set default values in TextField
-                 translateX.setText(String.format(Locale.US, "%.1f", 0.0));
-                 translateY.setText(String.format(Locale.US, "%.1f", 0.0));
-                 translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+                // значения по умолчанию в текстовом поле
+                translateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                translateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-                 rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
-                 rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
-                 rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
+                rotateX.setText(String.format(Locale.US, "%.1f", 0.0));
+                rotateY.setText(String.format(Locale.US, "%.1f", 0.0));
+                rotateZ.setText(String.format(Locale.US, "%.1f", 0.0));
 
-                 scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
-                 scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
-                 scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
+                scaleX.setText(String.format(Locale.US, "%.1f", 1.0));
+                scaleY.setText(String.format(Locale.US, "%.1f", 1.0));
+                scaleZ.setText(String.format(Locale.US, "%.1f", 1.0));
 
                 ErrorWindow.showError("Неверный формат числа, используются значения по умолчанию");
             }
@@ -244,10 +245,9 @@ public class MainWindowController {
         render();
     }
 
-
-   private void updateTransformFields() {
-         List<Integer> selectedModels = scene.getSelectedModels();
-          if (selectedModels.isEmpty()) {
+    private void updateTransformFields() {
+        List<Integer> selectedModels = scene.getSelectedModels();
+        if (selectedModels.isEmpty()) {
             translateX.setText(String.format(Locale.US, "%.1f", 0.0));
             translateY.setText(String.format(Locale.US, "%.1f", 0.0));
             translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
@@ -289,68 +289,71 @@ public class MainWindowController {
             isShiftPressed = true;
         }
         double moveSpeed = cameraTranslateSpeed;
-        if(isShiftPressed){
+        if (isShiftPressed) {
             moveSpeed = moveSpeed * 3;
         }
-        if(event.getCode() == KeyCode.W) {
+        if (event.getCode() == KeyCode.W) {
             cameraOffset = cameraOffset.add(camera.getTarget().subtract(camera.getPosition()).normalize().multiply(moveSpeed));
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.S) {
+        if (event.getCode() == KeyCode.S) {
             cameraOffset = cameraOffset.add(camera.getPosition().subtract(camera.getTarget()).normalize().multiply(moveSpeed));
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.A) {
+        if (event.getCode() == KeyCode.A) {
             Vector3 view = camera.getPosition().subtract(camera.getTarget()).normalize();
             Vector3 right = view.crossProduct(camera.getUp()).normalize().multiply(moveSpeed);
             cameraOffset = cameraOffset.add(right);
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.D) {
+        if (event.getCode() == KeyCode.D) {
             Vector3 view = camera.getPosition().subtract(camera.getTarget()).normalize();
             Vector3 right = camera.getUp().crossProduct(view).normalize().multiply(moveSpeed);
             cameraOffset = cameraOffset.add(right);
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.SPACE) {
+        if (event.getCode() == KeyCode.SPACE) {
             cameraOffset = cameraOffset.add(camera.getUp().normalize().multiply(moveSpeed));
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.CONTROL) {
+        if (event.getCode() == KeyCode.CONTROL) {
             cameraOffset = cameraOffset.add(camera.getUp().negate().normalize().multiply(moveSpeed));
             updateCameraPosition();
         }
-        if(event.getCode() == KeyCode.F){
+        if (event.getCode() == KeyCode.F) {
             focusCameraOnModel();
         }
-        if(event.getCode() == KeyCode.O) {
+        if (event.getCode() == KeyCode.O) {
             isOrbiting = !isOrbiting;
-            if(!scene.getSelectedModels().isEmpty()){
+            if (!scene.getSelectedModels().isEmpty()) {
                 orbitTarget = calculateModelCenter(scene.getModels().get(scene.getSelectedModels().get(0)));
-            }else{
+            } else {
                 orbitTarget = new Vector3(0, 0, 0);
             }
             render();
         }
     }
-    private void updateCameraPosition(){
+
+    private void updateCameraPosition() {
         if (!scene.getSelectedModels().isEmpty()) {
             Model model = scene.getModels().get(scene.getSelectedModels().get(0));
             Vector3 center = calculateModelCenter(model);
         }
         camera.setPosition(camera.getPosition().add(cameraOffset));
         camera.setTarget(camera.getTarget().add(cameraOffset));
-        cameraOffset = new Vector3(0,0,0);
+        cameraOffset = new Vector3(0, 0, 0);
         render();
     }
+
     @FXML
     private void handleKeyReleased(KeyEvent event) {
         if (event.getCode() == KeyCode.SHIFT) {
             isShiftPressed = false;
         }
     }
+
     @FXML
-    private void handleMousePressed(MouseEvent event){
+    private void handleMousePressed(MouseEvent event) {
         mouseX = event.getX();
         mouseY = event.getY();
     }
@@ -372,7 +375,7 @@ public class MainWindowController {
             double dx = event.getX() - mouseX;
             double dy = event.getY() - mouseY;
             double sensitivity = rotateSensitivity;
-            if(!isOrbiting){
+            if (!isOrbiting) {
                 if (scene.getSelectedModels().isEmpty()) {
                     rotateCamera(dx * sensitivity, dy * sensitivity, new Vector3(0, 0, 0));
                 } else {
@@ -380,7 +383,7 @@ public class MainWindowController {
                     Vector3 center = calculateModelCenter(model);
                     rotateCamera(dx * sensitivity, dy * sensitivity, center);
                 }
-            }else{
+            } else {
                 rotateOrbitCamera(dx * sensitivity, dy * sensitivity);
             }
         }
@@ -388,7 +391,8 @@ public class MainWindowController {
         mouseY = event.getY();
         render();
     }
-    private void rotateCamera(double dx, double dy, Vector3 target){
+
+    private void rotateCamera(double dx, double dy, Vector3 target) {
         double radius = camera.getPosition().subtract(target).magnitude();
         Vector3 newPosition = camera.getPosition().subtract(target).normalize().multiply(radius);
 
@@ -400,11 +404,13 @@ public class MainWindowController {
         camera.setTarget(target);
         camera.setUp(new Vector3(0, 1, 0));
     }
-    private void rotateOrbitCamera(double dx, double dy){
+
+    private void rotateOrbitCamera(double dx, double dy) {
         cameraRotation = cameraRotation.add(new Vector3(dy, -dx, 0));
         updateOrbitCamera();
     }
-    private void updateOrbitCamera(){
+
+    private void updateOrbitCamera() {
         double camX = cameraRotation.getX();
         double camY = cameraRotation.getY();
         Matrix4 rotationY = Matrix4.rotationY(camY);
@@ -414,11 +420,12 @@ public class MainWindowController {
         camera.setTarget(orbitTarget);
         camera.setUp(new Vector3(0, 1, 0));
     }
-        private void focusCameraOnModel(){
+
+    private void focusCameraOnModel() {
         List<Integer> selectedModels = scene.getSelectedModels();
-        if(selectedModels.isEmpty()){
+        if (selectedModels.isEmpty()) {
             camera.setPosition(new Vector3(0, 0, 5));
-            camera.setTarget(new Vector3(0,0,0));
+            camera.setTarget(new Vector3(0, 0, 0));
             render();
             return;
         }
@@ -440,10 +447,11 @@ public class MainWindowController {
         }
         return maxRadius;
     }
+
     private Vector3 calculateModelCenter(Model model) {
         Vector3 center = new Vector3(0, 0, 0);
 
-        if (model.getVertices().isEmpty()){
+        if (model.getVertices().isEmpty()) {
             return center;
         }
         for (Vector3 vertex : model.getVertices()) {
@@ -456,7 +464,7 @@ public class MainWindowController {
     private void handleMouseScroll(javafx.scene.input.ScrollEvent event) {
         double scrollDelta = event.getDeltaY();
         double sensitivity = 0.1;
-        if(!isOrbiting){
+        if (!isOrbiting) {
             if (scene.getSelectedModels().isEmpty()) {
                 Vector3 viewDir = camera.getPosition().subtract(camera.getTarget()).normalize();
                 double distance = camera.getPosition().subtract(camera.getTarget()).magnitude();
@@ -472,7 +480,7 @@ public class MainWindowController {
                 Vector3 newPosition = camera.getPosition().add(viewDir.multiply(-scrollDelta * zoomSpeed));
                 camera.setPosition(newPosition);
             }
-        }else{
+        } else {
             cameraDistance += -scrollDelta * sensitivity * 0.5;
             updateOrbitCamera();
         }
@@ -486,20 +494,20 @@ public class MainWindowController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files", "*.jpg"));
         File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
         if (file != null) {
-          String fileName = file.getName().toLowerCase();
+            String fileName = file.getName().toLowerCase();
             if (!fileName.endsWith(".jpg")) {
                 ErrorWindow.showError("Неверный формат файла. Поддерживаются только JPG файлы.");
-                 return;
+                return;
             }
             try {
                 Image image = new Image(file.toURI().toString());
                 Texture texture = new Texture(image);
                 List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.isEmpty()){
+                if (selectedModels.isEmpty()) {
                     ErrorWindow.showError("No models selected");
                     return;
                 }
-                if (selectedModels.size() > 1){
+                if (selectedModels.size() > 1) {
                     ErrorWindow.showError("Only one model can have texture");
                     return;
                 }
@@ -514,7 +522,7 @@ public class MainWindowController {
         }
     }
 
-        @FXML
+    @FXML
     private void loadModel() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open OBJ File");
@@ -523,9 +531,9 @@ public class MainWindowController {
         if (file != null) {
             String fileName = file.getName().toLowerCase();
             if (!fileName.endsWith(".obj")) {
-                 ErrorWindow.showError("Неверный формат файла. Поддерживаются только OBJ файлы.");
-                 return;
-             }
+                ErrorWindow.showError("Неверный формат файла. Поддерживаются только OBJ файлы.");
+                return;
+            }
             try {
                 Model model = ObjReader.read(file.getAbsolutePath());
                 scene.addModel(model);
@@ -548,12 +556,12 @@ public class MainWindowController {
         if (file != null) {
             try {
                 List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.isEmpty()){
+                if (selectedModels.isEmpty()) {
                     ErrorWindow.showError("No models selected");
                     return;
                 }
 
-                if (selectedModels.size() > 1){
+                if (selectedModels.size() > 1) {
                     ErrorWindow.showError("Only one model can be saved");
                     return;
                 }
@@ -566,6 +574,7 @@ public class MainWindowController {
             }
         }
     }
+
     @FXML
     private void removeModel() {
         List<Integer> selectedModels = scene.getSelectedModels();
@@ -573,7 +582,7 @@ public class MainWindowController {
             ErrorWindow.showError("No models selected");
             return;
         }
-        for (int i = selectedModels.size() - 1; i >= 0 ; i--) {
+        for (int i = selectedModels.size() - 1; i >= 0; i--) {
             scene.removeModel(scene.getModels().get(selectedModels.get(i)));
         }
         updateModelList();
@@ -586,17 +595,17 @@ public class MainWindowController {
     }
 
     private void updateSelection() {
-        if(isShiftPressed){
-            if(!modelListView.getSelectionModel().getSelectedIndices().isEmpty()){
+        if (isShiftPressed) {
+            if (!modelListView.getSelectionModel().getSelectedIndices().isEmpty()) {
                 int lastSelected = modelListView.getSelectionModel().getSelectedIndices().get(modelListView.getSelectionModel().getSelectedIndices().size() - 1);
-                if(!scene.isSelected(lastSelected)){
+                if (!scene.isSelected(lastSelected)) {
                     scene.selectModel(lastSelected);
-                }else{
+                } else {
                     scene.deselectModel(lastSelected);
                 }
 
             }
-        }else {
+        } else {
             scene.clearSelection();
             for (Integer index : modelListView.getSelectionModel().getSelectedIndices()) {
                 scene.selectModel(index);
@@ -613,9 +622,9 @@ public class MainWindowController {
             return;
         }
 
-        for(Integer selectedModel : selectedModels){
+        for (Integer selectedModel : selectedModels) {
             Model model = scene.getModels().get(selectedModel);
-            if (model.getVertices().isEmpty()){
+            if (model.getVertices().isEmpty()) {
                 ErrorWindow.showError("Нет вершин в модели " + model.getName());
                 continue;
             }
@@ -628,7 +637,7 @@ public class MainWindowController {
             dialog.showAndWait().ifPresent(index -> {
                 try {
                     int vertexIndex = Integer.parseInt(index);
-                    if(vertexIndex >= 0 && vertexIndex < model.getVertices().size()){
+                    if (vertexIndex >= 0 && vertexIndex < model.getVertices().size()) {
                         model.removeVertex(vertexIndex);
                     } else {
                         ErrorWindow.showError("Неверный индекс вершины");
@@ -648,9 +657,9 @@ public class MainWindowController {
             return;
         }
 
-        for(Integer selectedModel : selectedModels){
+        for (Integer selectedModel : selectedModels) {
             Model model = scene.getModels().get(selectedModel);
-            if (model.getPolygons().isEmpty()){
+            if (model.getPolygons().isEmpty()) {
                 ErrorWindow.showError("Нет полигонов в модели " + model.getName());
                 continue;
             }
@@ -663,7 +672,7 @@ public class MainWindowController {
             dialog.showAndWait().ifPresent(index -> {
                 try {
                     int polygonIndex = Integer.parseInt(index);
-                    if(polygonIndex >= 0 && polygonIndex < model.getPolygons().size()){
+                    if (polygonIndex >= 0 && polygonIndex < model.getPolygons().size()) {
                         model.removePolygon(polygonIndex);
                     } else {
                         ErrorWindow.showError("Неверный индекс полигона");
