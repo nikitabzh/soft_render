@@ -221,12 +221,11 @@ public class MainWindowController {
                 model.getTransform().setRotation(new Vector3(rx, ry, rz));
                 model.getTransform().setScale(new Vector3(sx, sy, sz));
             } catch (NumberFormatException e) {
-                // значения по умолчанию для модели
+
                 model.getTransform().setPosition(new Vector3(0, 0, 0));
                 model.getTransform().setRotation(new Vector3(0, 0, 0));
                 model.getTransform().setScale(new Vector3(1, 1, 1));
 
-                // значения по умолчанию в текстовом поле
                 translateX.setText(String.format(Locale.US, "%.1f", 0.0));
                 translateY.setText(String.format(Locale.US, "%.1f", 0.0));
                 translateZ.setText(String.format(Locale.US, "%.1f", 0.0));
@@ -244,6 +243,77 @@ public class MainWindowController {
         }
         render();
     }
+    @FXML
+    private void loadModel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open OBJ File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("OBJ files", "*.obj"));
+        File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
+        if (file != null) {
+            String fileName = file.getName().toLowerCase();
+            if (!fileName.endsWith(".obj")) {
+                ErrorWindow.showError("Неверный формат файла. Поддерживаются только OBJ файлы.");
+                return;
+            }
+            try {
+                Model model = ObjReader.read(file.getAbsolutePath());
+                scene.addModel(model);
+                updateModelList();
+                render();
+            } catch (IOException e) {
+                ErrorWindow.showError("Error loading model: " + e.getMessage());
+            }
+        }
+    }
+
+
+    @FXML
+    private void saveModel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save OBJ File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("OBJ files", "*.obj"));
+        File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                List<Integer> selectedModels = scene.getSelectedModels();
+                if (selectedModels.isEmpty()){
+                    ErrorWindow.showError("No models selected");
+                    return;
+                }
+
+                if (selectedModels.size() > 1){
+                    ErrorWindow.showError("Only one model can be saved");
+                    return;
+                }
+
+                Model model = scene.getModels().get(selectedModels.get(0));
+                ObjWriter.write(file.getAbsolutePath(), model, true);
+
+            } catch (IOException e) {
+                ErrorWindow.showError("Error saving model: " + e.getMessage());
+            }
+        }
+    }
+    @FXML
+    private void removeModel() {
+        List<Integer> selectedModels = scene.getSelectedModels();
+        if (selectedModels.isEmpty()) {
+            ErrorWindow.showError("No models selected");
+            return;
+        }
+        for (int i = selectedModels.size() - 1; i >= 0 ; i--) {
+            scene.removeModel(scene.getModels().get(selectedModels.get(i)));
+        }
+        updateModelList();
+        render();
+    }
+
+    private void updateModelList() {
+        ObservableList<Model> observableList = FXCollections.observableList(scene.getModels());
+        modelListView.setItems(observableList);
+    }
+
 
     private void updateTransformFields() {
         List<Integer> selectedModels = scene.getSelectedModels();
@@ -334,17 +404,6 @@ public class MainWindowController {
         }
     }
 
-    private void updateCameraPosition() {
-        if (!scene.getSelectedModels().isEmpty()) {
-            Model model = scene.getModels().get(scene.getSelectedModels().get(0));
-            Vector3 center = calculateModelCenter(model);
-        }
-        camera.setPosition(camera.getPosition().add(cameraOffset));
-        camera.setTarget(camera.getTarget().add(cameraOffset));
-        cameraOffset = new Vector3(0, 0, 0);
-        render();
-    }
-
     @FXML
     private void handleKeyReleased(KeyEvent event) {
         if (event.getCode() == KeyCode.SHIFT) {
@@ -356,6 +415,32 @@ public class MainWindowController {
     private void handleMousePressed(MouseEvent event) {
         mouseX = event.getX();
         mouseY = event.getY();
+    }
+    @FXML
+    private void handleMouseScroll(javafx.scene.input.ScrollEvent event) {
+        double scrollDelta = event.getDeltaY();
+        double sensitivity = 0.1;
+        if (!isOrbiting) {
+            if (scene.getSelectedModels().isEmpty()) {
+                Vector3 viewDir = camera.getPosition().subtract(camera.getTarget()).normalize();
+                double distance = camera.getPosition().subtract(camera.getTarget()).magnitude();
+                double zoomSpeed = distance * sensitivity * 0.1;
+                Vector3 newPosition = camera.getPosition().add(viewDir.multiply(-scrollDelta * zoomSpeed));
+                camera.setPosition(newPosition);
+            } else {
+                Model model = scene.getModels().get(scene.getSelectedModels().get(0));
+                Vector3 center = calculateModelCenter(model);
+                Vector3 viewDir = camera.getPosition().subtract(center).normalize();
+                double distance = camera.getPosition().subtract(center).magnitude();
+                double zoomSpeed = distance * sensitivity * 0.1;
+                Vector3 newPosition = camera.getPosition().add(viewDir.multiply(-scrollDelta * zoomSpeed));
+                camera.setPosition(newPosition);
+            }
+        } else {
+            cameraDistance += -scrollDelta * sensitivity * 0.5;
+            updateOrbitCamera();
+        }
+        render();
     }
 
 
@@ -392,52 +477,6 @@ public class MainWindowController {
         render();
     }
 
-    private void rotateCamera(double dx, double dy, Vector3 target) {
-        double radius = camera.getPosition().subtract(target).magnitude();
-        Vector3 newPosition = camera.getPosition().subtract(target).normalize().multiply(radius);
-
-        Matrix4 rotationY = Matrix4.rotationY(-dx);
-        Matrix4 rotationX = Matrix4.rotationX(dy);
-
-        newPosition = rotationX.transform(rotationY.transform(newPosition)).add(target);
-        camera.setPosition(newPosition);
-        camera.setTarget(target);
-        camera.setUp(new Vector3(0, 1, 0));
-    }
-
-    private void rotateOrbitCamera(double dx, double dy) {
-        cameraRotation = cameraRotation.add(new Vector3(dy, -dx, 0));
-        updateOrbitCamera();
-    }
-
-    private void updateOrbitCamera() {
-        double camX = cameraRotation.getX();
-        double camY = cameraRotation.getY();
-        Matrix4 rotationY = Matrix4.rotationY(camY);
-        Matrix4 rotationX = Matrix4.rotationX(camX);
-        Vector3 newPosition = rotationX.transform(rotationY.transform(new Vector3(0, 0, cameraDistance))).add(orbitTarget);
-        camera.setPosition(newPosition);
-        camera.setTarget(orbitTarget);
-        camera.setUp(new Vector3(0, 1, 0));
-    }
-
-    private void focusCameraOnModel() {
-        List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.isEmpty()) {
-            camera.setPosition(new Vector3(0, 0, 5));
-            camera.setTarget(new Vector3(0, 0, 0));
-            render();
-            return;
-        }
-        Model model = scene.getModels().get(selectedModels.get(0));
-        Vector3 center = calculateModelCenter(model);
-        cameraDistance = calculateModelRadius(model) * 2;
-        camera.setPosition(center.add(new Vector3(0, 0, cameraDistance)));
-        camera.setTarget(center);
-        cameraRotation = new Vector3(0, 0, 0);
-        render();
-    }
-
     private double calculateModelRadius(Model model) {
         double maxRadius = 0;
         Vector3 center = calculateModelCenter(model);
@@ -460,32 +499,6 @@ public class MainWindowController {
         return center.multiply(1.0 / model.getVertices().size());
     }
 
-    @FXML
-    private void handleMouseScroll(javafx.scene.input.ScrollEvent event) {
-        double scrollDelta = event.getDeltaY();
-        double sensitivity = 0.1;
-        if (!isOrbiting) {
-            if (scene.getSelectedModels().isEmpty()) {
-                Vector3 viewDir = camera.getPosition().subtract(camera.getTarget()).normalize();
-                double distance = camera.getPosition().subtract(camera.getTarget()).magnitude();
-                double zoomSpeed = distance * sensitivity * 0.1;
-                Vector3 newPosition = camera.getPosition().add(viewDir.multiply(-scrollDelta * zoomSpeed));
-                camera.setPosition(newPosition);
-            } else {
-                Model model = scene.getModels().get(scene.getSelectedModels().get(0));
-                Vector3 center = calculateModelCenter(model);
-                Vector3 viewDir = camera.getPosition().subtract(center).normalize();
-                double distance = camera.getPosition().subtract(center).magnitude();
-                double zoomSpeed = distance * sensitivity * 0.1;
-                Vector3 newPosition = camera.getPosition().add(viewDir.multiply(-scrollDelta * zoomSpeed));
-                camera.setPosition(newPosition);
-            }
-        } else {
-            cameraDistance += -scrollDelta * sensitivity * 0.5;
-            updateOrbitCamera();
-        }
-        render();
-    }
 
     @FXML
     private void loadTexture() {
@@ -520,78 +533,6 @@ public class MainWindowController {
                 ErrorWindow.showError("Error loading texture: " + e.getMessage());
             }
         }
-    }
-
-    @FXML
-    private void loadModel() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open OBJ File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("OBJ files", "*.obj"));
-        File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
-        if (file != null) {
-            String fileName = file.getName().toLowerCase();
-            if (!fileName.endsWith(".obj")) {
-                ErrorWindow.showError("Неверный формат файла. Поддерживаются только OBJ файлы.");
-                return;
-            }
-            try {
-                Model model = ObjReader.read(file.getAbsolutePath());
-                scene.addModel(model);
-                updateModelList();
-                render();
-            } catch (IOException e) {
-                ErrorWindow.showError("Error loading model: " + e.getMessage());
-            }
-        }
-    }
-
-
-    @FXML
-    private void saveModel() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save OBJ File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("OBJ files", "*.obj"));
-        File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-
-        if (file != null) {
-            try {
-                List<Integer> selectedModels = scene.getSelectedModels();
-                if (selectedModels.isEmpty()) {
-                    ErrorWindow.showError("No models selected");
-                    return;
-                }
-
-                if (selectedModels.size() > 1) {
-                    ErrorWindow.showError("Only one model can be saved");
-                    return;
-                }
-
-                Model model = scene.getModels().get(selectedModels.get(0));
-                ObjWriter.write(file.getAbsolutePath(), model, true);
-
-            } catch (IOException e) {
-                ErrorWindow.showError("Error saving model: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    private void removeModel() {
-        List<Integer> selectedModels = scene.getSelectedModels();
-        if (selectedModels.isEmpty()) {
-            ErrorWindow.showError("No models selected");
-            return;
-        }
-        for (int i = selectedModels.size() - 1; i >= 0; i--) {
-            scene.removeModel(scene.getModels().get(selectedModels.get(i)));
-        }
-        updateModelList();
-        render();
-    }
-
-    private void updateModelList() {
-        ObservableList<Model> observableList = FXCollections.observableList(scene.getModels());
-        modelListView.setItems(observableList);
     }
 
     private void updateSelection() {
@@ -684,4 +625,62 @@ public class MainWindowController {
             });
         }
     }
+
+    private void rotateCamera(double dx, double dy, Vector3 target) {
+        double radius = camera.getPosition().subtract(target).magnitude();
+        Vector3 newPosition = camera.getPosition().subtract(target).normalize().multiply(radius);
+
+        Matrix4 rotationY = Matrix4.rotationY(-dx);
+        Matrix4 rotationX = Matrix4.rotationX(dy);
+
+        newPosition = rotationX.transform(rotationY.transform(newPosition)).add(target);
+        camera.setPosition(newPosition);
+        camera.setTarget(target);
+        camera.setUp(new Vector3(0, 1, 0));
+    }
+
+    private void rotateOrbitCamera(double dx, double dy) {
+        cameraRotation = cameraRotation.add(new Vector3(dy, -dx, 0));
+        updateOrbitCamera();
+    }
+
+    private void updateOrbitCamera() {
+        double camX = cameraRotation.getX();
+        double camY = cameraRotation.getY();
+        Matrix4 rotationY = Matrix4.rotationY(camY);
+        Matrix4 rotationX = Matrix4.rotationX(camX);
+        Vector3 newPosition = rotationX.transform(rotationY.transform(new Vector3(0, 0, cameraDistance))).add(orbitTarget);
+        camera.setPosition(newPosition);
+        camera.setTarget(orbitTarget);
+        camera.setUp(new Vector3(0, 1, 0));
+    }
+
+    private void focusCameraOnModel() {
+        List<Integer> selectedModels = scene.getSelectedModels();
+        if (selectedModels.isEmpty()) {
+            camera.setPosition(new Vector3(0, 0, 5));
+            camera.setTarget(new Vector3(0, 0, 0));
+            render();
+            return;
+        }
+        Model model = scene.getModels().get(selectedModels.get(0));
+        Vector3 center = calculateModelCenter(model);
+        cameraDistance = calculateModelRadius(model) * 2;
+        camera.setPosition(center.add(new Vector3(0, 0, cameraDistance)));
+        camera.setTarget(center);
+        cameraRotation = new Vector3(0, 0, 0);
+        render();
+    }
+
+    private void updateCameraPosition() {
+        if (!scene.getSelectedModels().isEmpty()) {
+            Model model = scene.getModels().get(scene.getSelectedModels().get(0));
+            Vector3 center = calculateModelCenter(model);
+        }
+        camera.setPosition(camera.getPosition().add(cameraOffset));
+        camera.setTarget(camera.getTarget().add(cameraOffset));
+        cameraOffset = new Vector3(0, 0, 0);
+        render();
+    }
+
 }
