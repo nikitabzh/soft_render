@@ -93,12 +93,14 @@ public class Renderer {
         Vector3 screenV3 = transformToScreenCoordinates(v3);
 
         if (lightingEnabled) {
-            Color lightColor = calculateLighting(screenV1, screenV2, screenV3, originalV1, originalV2, originalV3, color);
-            if (textureEnabled && texture != null) {
-                triangleRasterizer.drawTriangle(screenV1, screenV2, screenV3, lightColor, zBuffer, texture, originalTextureV1, originalTextureV2, originalTextureV3);
-            } else {
-                triangleRasterizer.drawTriangle(screenV1, screenV2, screenV3, lightColor, zBuffer);
-            }
+            Vector3 normal = originalV2.subtract(originalV1).crossProduct(originalV3.subtract(originalV1)).normalize();
+            Vector3 lightDir = new Vector3(0, 0, 1).normalize();
+
+            double intensity1 = Math.max(0, lightDir.dotProduct(normal));
+            double intensity2 = intensity1; // Для простоты предположим одинаковый нормаль
+            double intensity3 = intensity1;
+
+            triangleRasterizer.drawTriangleWithShading(screenV1, screenV2, screenV3, intensity1, intensity2, intensity3, color, zBuffer);
         } else {
             if (textureEnabled && texture != null) {
                 triangleRasterizer.drawTriangle(screenV1, screenV2, screenV3, color, zBuffer, texture, originalTextureV1, originalTextureV2, originalTextureV3);
@@ -107,6 +109,7 @@ public class Renderer {
             }
         }
     }
+
 
     private Color calculateLighting(Vector3 screenV1, Vector3 screenV2, Vector3 screenV3, Vector3 originalV1, Vector3 originalV2, Vector3 originalV3, Color baseColor) {
         Vector3 normal = originalV2.subtract(originalV1).crossProduct(originalV3.subtract(originalV1)).normalize();

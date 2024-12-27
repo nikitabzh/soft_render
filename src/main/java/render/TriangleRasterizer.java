@@ -15,6 +15,50 @@ public class TriangleRasterizer {
         this.width = width;
         this.height = height;
     }
+    public void drawTriangleWithShading(Vector3 v1, Vector3 v2, Vector3 v3, double intensity1, double intensity2, double intensity3, Color baseColor, double[][] zBuffer) {
+        int x1 = (int) Math.round(v1.getX());
+        int y1 = (int) Math.round(v1.getY());
+        double z1 = v1.getZ();
+
+        int x2 = (int) Math.round(v2.getX());
+        int y2 = (int) Math.round(v2.getY());
+        double z2 = v2.getZ();
+
+        int x3 = (int) Math.round(v3.getX());
+        int y3 = (int) Math.round(v3.getY());
+        double z3 = v3.getZ();
+
+        int minX = Math.max(0, Math.min(Math.min(x1, x2), x3));
+        int minY = Math.max(0, Math.min(Math.min(y1, y2), y3));
+        int maxX = Math.min(width - 1, Math.max(Math.max(x1, x2), x3));
+        int maxY = Math.min(height - 1, Math.max(Math.max(y1, y2), y3));
+
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                double[] barycentric = computeBarycentricCoordinates(x, y, x1, y1, x2, y2, x3, y3);
+                double u = barycentric[0];
+                double v = barycentric[1];
+                double w = barycentric[2];
+
+                if (u >= 0 && v >= 0 && w >= 0) {
+                    double depth = u * z1 + v * z2 + w * z3;
+                    if (depth > zBuffer[x][y]) {
+                        zBuffer[x][y] = depth;
+
+                        // Интерполируем интенсивность света
+                        double interpolatedIntensity = u * intensity1 + v * intensity2 + w * intensity3;
+                        interpolatedIntensity = Math.min(1.0, Math.max(0.0, interpolatedIntensity));
+
+                        // Применяем интенсивность к базовому цвету
+                        Color shadedColor = baseColor.deriveColor(0, 1, interpolatedIntensity, 1);
+                        gc.setFill(shadedColor);
+                        gc.fillRect(x, y, 1, 1);
+                    }
+                }
+            }
+        }
+    }
+
 
     public void drawTriangle(Vector3 v1, Vector3 v2, Vector3 v3, Color color, double[][] zBuffer) {
         int x1 = (int) Math.round(v1.getX());
